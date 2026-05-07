@@ -182,6 +182,44 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
 .sort-select { flex:1; font-size:13px; padding:10px 12px; min-height:auto; }
 .report-btn { background:#2a9d8f; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:10px 14px; cursor:pointer; white-space:nowrap; }
 
+
+/* LOGIN SCREEN */
+.login-overlay {
+  position:fixed; inset:0; background:#1a3a6b;
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999; padding:24px;
+  flex-direction:column; gap:0;
+}
+.login-box {
+  background:#fff; border-radius:24px;
+  padding:36px 28px; width:100%; max-width:340px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.3);
+  text-align:center;
+}
+.login-icon { font-size:48px; margin-bottom:12px; }
+.login-title { font-size:20px; font-weight:900; color:#1a3a6b; margin-bottom:4px; }
+.login-sub { font-size:12px; color:#8a93a8; margin-bottom:28px; letter-spacing:0.05em; }
+.login-input {
+  display:block; width:100%; box-sizing:border-box;
+  background:#f8f9fb; border:2px solid #e0e4eb; border-radius:14px;
+  font-family:'Noto Sans JP',sans-serif; font-size:22px; font-weight:700;
+  padding:14px 16px; outline:none; text-align:center;
+  letter-spacing:0.2em; margin-bottom:12px; -webkit-appearance:none;
+}
+.login-input:focus { border-color:#1a3a6b; background:#fff; }
+.login-btn {
+  display:block; width:100%; background:#e63946; border:none; border-radius:14px;
+  color:#fff; font-family:'Noto Sans JP',sans-serif;
+  font-size:16px; font-weight:900; padding:16px; cursor:pointer;
+  box-shadow:0 4px 14px rgba(230,57,70,0.35);
+  transition:opacity 0.2s;
+}
+.login-btn:active { opacity:0.85; }
+.login-err {
+  font-size:12px; color:#e63946; font-weight:700;
+  margin-top:10px; display:none;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -200,6 +238,19 @@ window.__db = firebase.firestore();
 </script>
 </head>
 <body>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-icon">🏭</div>
+    <div class="login-title">社内不適合 報告システム</div>
+    <div class="login-sub">FACTORY QUALITY MANAGEMENT</div>
+    <input type="password" class="login-input" id="loginInput"
+      placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkLogin()" />
+    <button class="login-btn" onclick="checkLogin()">ログイン</button>
+    <div class="login-err" id="loginErr">パスワードが違います</div>
+  </div>
+</div>
 
 <header>
   <div class="hbadge">⚠️</div>
@@ -405,12 +456,51 @@ window.__db = firebase.firestore();
 <div class="toast" id="toast"></div>
 
 <script>
+// Login
+function checkLogin() {
+  const pw = document.getElementById('loginInput').value;
+  if (pw === 'okiko5020') {
+    document.getElementById('loginOverlay').style.display = 'none';
+    sessionStorage.setItem('auth', '1');
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('loginInput').value = '';
+  }
+}
+
+// Check if already authenticated this session
+window.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem('auth') === '1') {
+    document.getElementById('loginOverlay').style.display = 'none';
+  } else {
+    setTimeout(() => document.getElementById('loginInput').focus(), 300);
+  }
+});
+
 // EmailJS
 try { emailjs.init('Pg8zQVS-AA9bjp1ki'); } catch(e) { console.warn('EmailJS not loaded'); }
 const EMAILJS_SERVICE = 'service_7l6h5bs';
 const EMAILJS_TEMPLATE = 'template_c2nqwqd';
 
 let emailAddresses = JSON.parse(localStorage.getItem('emails')||'[]');
+
+// Firestoreからメールアドレスリストを読み込む
+function fbLoadEmails() {
+  if (!window.__db) return;
+  window.__db.collection('settings').doc('emails').get().then(doc => {
+    if (doc.exists) {
+      emailAddresses = doc.data().list || [];
+      localStorage.setItem('emails', JSON.stringify(emailAddresses));
+      renderEmailList();
+    }
+  }).catch(e => console.warn('Email load failed', e.message));
+}
+
+function fbSaveEmails() {
+  if (!window.__db) return;
+  window.__db.collection('settings').doc('emails').set({ list: emailAddresses })
+    .catch(e => console.warn('Email save failed', e.message));
+}
 
 function renderEmailList() {
   const list = document.getElementById('emailList');
@@ -479,7 +569,7 @@ window.onload = () => {
   records = JSON.parse(localStorage.getItem('nr')||'[]');
   renderRecords();
   // Then merge Firebase data in background
-  setTimeout(fbLoadAndMerge, 1000);
+  setTimeout(() => { fbLoadAndMerge(); fbLoadEmails(); }, 1000);
 };
 
 function showTab(name, btn) {
@@ -488,7 +578,7 @@ function showTab(name, btn) {
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
   if(name==='records') { renderRecords(); fbLoadAndMerge(); }
-  if(name==='settings') renderEmailList();
+  if(name==='settings') { renderEmailList(); fbLoadEmails(); }
 }
 
 function updateLines() {
