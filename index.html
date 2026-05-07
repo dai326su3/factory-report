@@ -782,7 +782,7 @@ return ContentService.createTextOutput(JSON.stringify({result:‘error’,messag
     const gasUrl=localStorage.getItem('gas_url');
     if(gasUrl){
       try{
-        await fetch(gasUrl,{method:'POST',body:JSON.stringify({action:'update_cause_action',recordId:String(editingId),cause,action,status:modalStatus}),headers:{'Content-Type':'application/json'}});
+        await fetch(gasUrl,{method:'POST',body:JSON.stringify({action:'update_cause_action',recordId:String(editingId),cause,action,status:modalStatus}),headers:{'Content-Type':'text/plain'}});
         showToast('✅ スプレッドシートに保存しました');
       }catch(e){showToast('✅ 保存済み（シート送信失敗）',true);}
     }else{showToast('✅ 原因・対策を保存しました');}
