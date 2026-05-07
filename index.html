@@ -608,7 +608,7 @@ function submitReport() {
   if(!dt||!fac||!ln||!selType||!det||!rep||!selStatus){toast('すべての項目を入力してください',true);return;}
 
   const id=Date.now();
-  const newRecord = {id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:'',photoCount:selPhotos.length};
+  const newRecord = {id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:''};
   // 1. Save locally first (always works)
   records.unshift(newRecord);
   localStorage.setItem('nr', JSON.stringify(records));
