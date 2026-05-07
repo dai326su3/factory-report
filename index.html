@@ -486,20 +486,25 @@ let emailAddresses = JSON.parse(localStorage.getItem('emails')||'[]');
 
 // Firestoreからメールアドレスリストを読み込む
 function fbLoadEmails() {
-  if (!window.__db) return;
+  if (!window.__db) { toast('⚠️ DB未接続', true); return; }
   window.__db.collection('settings').doc('emails').get().then(doc => {
     if (doc.exists) {
-      emailAddresses = doc.data().list || [];
+      const list = doc.data().list || [];
+      emailAddresses = list;
       localStorage.setItem('emails', JSON.stringify(emailAddresses));
       renderEmailList();
+      toast('📧 メールアドレス同期完了（' + list.length + '件）');
+    } else {
+      toast('📧 共有アドレスなし（新規）');
     }
-  }).catch(e => console.warn('Email load failed', e.message));
+  }).catch(e => { toast('⚠️ 同期失敗: ' + e.message, true); });
 }
 
 function fbSaveEmails() {
-  if (!window.__db) return;
+  if (!window.__db) { toast('⚠️ 保存失敗（DB未接続）', true); return; }
   window.__db.collection('settings').doc('emails').set({ list: emailAddresses })
-    .catch(e => console.warn('Email save failed', e.message));
+    .then(() => toast('☁️ クラウドに保存しました'))
+    .catch(e => toast('⚠️ 保存失敗: ' + e.message, true));
 }
 
 function renderEmailList() {
