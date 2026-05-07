@@ -1091,6 +1091,11 @@ function markAllRead() {
   updateBadge(0);
 }
 
+// サービスワーカー登録（バッジ機能に必要）
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW error:', e));
+}
+
 function toast(msg,err=false) {
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
