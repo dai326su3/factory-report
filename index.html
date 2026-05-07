@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="不適合報告">
+<link rel="manifest" href="manifest.json">
 <title>社内不適合 報告システム</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
@@ -220,6 +224,20 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
   margin-top:10px; display:none;
 }
 
+
+  /* NEW badge */
+  .new-badge {
+    background:#e63946; color:#fff;
+    font-size:10px; font-weight:900;
+    padding:2px 8px; border-radius:100px;
+    letter-spacing:0.08em; animation:newPulse 1.5s infinite;
+    flex-shrink:0;
+  }
+  @keyframes newPulse {
+    0%,100% { opacity:1; }
+    50% { opacity:0.6; }
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -411,6 +429,54 @@ window.__db = firebase.firestore();
       パスワードは管理者にお問い合わせください。
     </p>
   </div>
+
+  <div class="card">
+    <div class="card-title">📲 ホーム画面への追加方法</div>
+
+    <p style="font-size:12px;font-weight:700;color:#1a3a6b;margin-bottom:8px;padding:6px 10px;background:#e8f0ff;border-radius:8px">🍎 iPhone / iPad（Safari）</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#1a3a6b;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</span>
+        <span style="font-size:13px;color:#444">SafariでアプリのURLを開く</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#1a3a6b;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</span>
+        <span style="font-size:13px;color:#444">画面下部の <strong>共有ボタン（□↑）</strong> をタップ</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#1a3a6b;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</span>
+        <span style="font-size:13px;color:#444">メニューをスクロールして <strong>「ホーム画面に追加」</strong> をタップ</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#1a3a6b;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">4</span>
+        <span style="font-size:13px;color:#444">名前を確認して <strong>「追加」</strong> をタップ → 完了！</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px;font-weight:700;color:#085041;margin-bottom:8px;padding:6px 10px;background:#e1f5ee;border-radius:8px">🤖 Android（Chrome）</p>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#2a9d8f;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</span>
+        <span style="font-size:13px;color:#444">ChromeでアプリのURLを開く</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#2a9d8f;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</span>
+        <span style="font-size:13px;color:#444">右上の <strong>メニュー（⋮）</strong> をタップ</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#2a9d8f;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</span>
+        <span style="font-size:13px;color:#444"><strong>「ホーム画面に追加」</strong> または <strong>「アプリをインストール」</strong> をタップ</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="background:#2a9d8f;color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">4</span>
+        <span style="font-size:13px;color:#444"><strong>「追加」</strong> をタップ → 完了！</span>
+      </div>
+    </div>
+
+    <div style="background:#e8f0ff;border-left:3px solid #1a3a6b;border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:#1a3a6b">
+      💡 ホーム画面から開くとアプリのように使えます
+    </div>
+  </div>
 </div>
 
 <!-- 編集モーダル -->
@@ -577,7 +643,7 @@ window.onload = () => {
   records = JSON.parse(localStorage.getItem('nr')||'[]');
   renderRecords();
   // Then merge Firebase data in background
-  setTimeout(() => { fbLoadAndMerge(); fbLoadEmails(); }, 1000);
+  setTimeout(() => { fbLoadAndMerge(); fbLoadEmails(); calcUnreadBadge(); }, 1000);
 };
 
 function showTab(name, btn) {
@@ -585,7 +651,7 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='records') { renderRecords(); fbLoadAndMerge(); }
+  if(name==='records') { renderRecords(); fbLoadAndMerge(); markAllRead(); }
   if(name==='settings') { renderEmailList(); fbLoadEmails(); }
 }
 
@@ -732,6 +798,7 @@ function fbLoadAndMerge() {
     records = localRecords;
     localStorage.setItem('nr', JSON.stringify(records));
     renderRecords();
+    calcUnreadBadge();
     const photoCount = localRecords.filter(r=>r.photos&&r.photos.length>0).length;
     if (photoCount > 0) toast('🔄 同期完了（写真' + photoCount + '件）');
   }).catch(e => { console.warn('Firebase load failed', e.message); toast('⚠️ 同期失敗', true); });
@@ -804,7 +871,7 @@ function renderRecords() {
   if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
   const sorted=getSorted();
   list.innerHTML=sorted.map(r=>`
-    <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})">
+    <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})" style="${r.id > (parseInt(localStorage.getItem('lastReadTime')||'0')) ? 'box-shadow:0 2px 12px rgba(230,57,70,0.18);' : ''}">
       <div class="record-top">
         <span class="rec-type-badge">${r.type}</span>
         <div class="badge-row">
@@ -997,6 +1064,33 @@ function openLightbox(s){document.getElementById('lightboxImg').src=s;document.g
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 
 // Toast
+// バッジ（未読・既読）
+function updateBadge(count) {
+  if ('setAppBadge' in navigator) {
+    if (count > 0) {
+      navigator.setAppBadge(count).catch(e => console.warn('Badge error', e));
+    } else {
+      navigator.clearAppBadge().catch(e => console.warn('Badge clear error', e));
+    }
+  }
+}
+
+function calcUnreadBadge() {
+  // 最後に記録一覧を見た時点より新しい記録の件数
+  const lastRead = parseInt(localStorage.getItem('lastReadTime') || '0');
+  const unread = records.filter(r => r.id > lastRead).length;
+  updateBadge(unread);
+}
+
+function markAllRead() {
+  // 記録一覧を開いたとき：現在の最新IDを既読として保存
+  if (records.length > 0) {
+    const latestId = Math.max(...records.map(r => r.id));
+    localStorage.setItem('lastReadTime', String(latestId));
+  }
+  updateBadge(0);
+}
+
 function toast(msg,err=false) {
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
