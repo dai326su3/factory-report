@@ -10,6 +10,11 @@
 
 - { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
+html, body {
+overflow-x:hidden;
+max-width:100%;
+}
+
 body {
 background:#f0f2f5;
 color:#1a1a2e;
@@ -86,6 +91,7 @@ input[type=“email”],
 textarea,
 select {
 width:100%;
+max-width:100%;
 box-sizing:border-box;
 background:#f8f9fb;
 border:2px solid #e0e4eb;
@@ -106,8 +112,10 @@ display:block;
 select {
 background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘16’ height=‘16’ viewBox=‘0 0 24 24’ fill=‘none’ stroke=’%238a93a8’ stroke-width=‘2’%3E%3Cpolyline points=‘6 9 12 15 18 9’%3E%3C/polyline%3E%3C/svg%3E”);
 background-repeat:no-repeat;
-background-position:right 14px center;
-padding-right:40px;
+background-position:right 12px center;
+padding-right:36px;
+box-sizing:border-box;
+max-width:100%;
 }
 input:focus, textarea:focus, select:focus { border-color:#1a3a6b; background:#fff; }
 textarea { min-height:90px; resize:none; line-height:1.7; width:100%; box-sizing:border-box; }
