@@ -632,6 +632,7 @@ const factoryLines = {
 let selType='', selStatus='', selPhotos=[];
 let records = JSON.parse(localStorage.getItem('nr')||'[]');
 let editId=null, modalSt='', delId=null;
+let lastReadId = parseInt(localStorage.getItem('lastReadTime')||'0');
 
 window.onload = () => {
   const now = new Date();
@@ -640,6 +641,7 @@ window.onload = () => {
   renderEmailList();
   // Wait for Firebase module to load then fetch data
   // Load local records immediately
+  lastReadId = parseInt(localStorage.getItem('lastReadTime')||'0');
   records = JSON.parse(localStorage.getItem('nr')||'[]');
   renderRecords();
   // Then merge Firebase data in background
@@ -651,7 +653,13 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='records') { renderRecords(); fbLoadAndMerge(); markAllRead(); }
+  if(name==='records') {
+    renderRecords();
+    fbLoadAndMerge();
+    // 3秒後に既読にする（NEWバッジを見せてから消す）
+    clearTimeout(window._readTimer);
+    window._readTimer = setTimeout(()=>{ markAllRead(); renderRecords(); }, 3000);
+  }
   if(name==='settings') { renderEmailList(); fbLoadEmails(); }
 }
 
@@ -871,7 +879,7 @@ function renderRecords() {
   if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
   const sorted=getSorted();
   list.innerHTML=sorted.map(r=>`
-    <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})" style="${r.id > (parseInt(localStorage.getItem('lastReadTime')||'0')) ? 'box-shadow:0 2px 12px rgba(230,57,70,0.18);' : ''}">
+    <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})" style="${r.id > lastReadId ? 'box-shadow:0 2px 12px rgba(230,57,70,0.18);' : ''}">
       <div class="record-top">
         <span class="rec-type-badge">${r.type}</span>
         <div class="badge-row">
@@ -1083,9 +1091,9 @@ function calcUnreadBadge() {
 }
 
 function markAllRead() {
-  // 記録一覧を開いたとき：現在の最新IDを既読として保存
   if (records.length > 0) {
     const latestId = Math.max(...records.map(r => r.id));
+    lastReadId = latestId;
     localStorage.setItem('lastReadTime', String(latestId));
   }
   updateBadge(0);
