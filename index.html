@@ -515,7 +515,11 @@ function renderPreview() {
 function removePhoto(i){selPhotos.splice(i,1);renderPreview();}
 
 function toggleHazard(i){const cb=document.getElementById('hcb'+i);cb.checked=!cb.checked;onHazardChange();}
-function onHazardChange(){[0,1,2,3].forEach(i=>document.getElementById('h'+i).classList.toggle('checked',document.getElementById('hcb'+i).checked));}
+function onHazardChange(){
+  [0,1,2,3].forEach(i=>document.getElementById('h'+i).classList.toggle('checked',document.getElementById('hcb'+i).checked));
+  const any=[0,1,2,3].some(i=>document.getElementById('hcb'+i).checked);
+  if(any) document.getElementById('sendEmail').checked=true;
+}
 function getHazards(){return['拡散性あり','健康被害リスクあり','継続生産不可','作業者の怪我・怪我リスクあり'].filter((_,i)=>document.getElementById('hcb'+i).checked);}
 
 function submitReport() {
