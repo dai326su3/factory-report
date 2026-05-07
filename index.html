@@ -174,6 +174,12 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
 .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:#1a3a6b; color:#fff; font-weight:700; font-size:14px; padding:13px 24px; border-radius:100px; z-index:999; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast.err { background:#e63946; }
+
+/* SORT & REPORT */
+.list-toolbar { display:flex; gap:8px; margin-bottom:10px; }
+.sort-select { flex:1; font-size:13px; padding:10px 12px; min-height:auto; }
+.report-btn { background:#2a9d8f; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:10px 14px; cursor:pointer; white-space:nowrap; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
@@ -293,7 +299,19 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
     <h2>報告一覧</h2>
     <span class="rec-count" id="recordCount">0件</span>
   </div>
-  <button class="csv-btn" onclick="downloadCSV()">📥 CSVダウンロード（Excel用）</button>
+  <div class="list-toolbar">
+    <select class="sort-select" id="sortSelect" onchange="renderRecords()">
+      <option value="new">新しい順</option>
+      <option value="old">古い順</option>
+      <option value="factory">工場別</option>
+      <option value="type">種類別</option>
+      <option value="status">ステータス別</option>
+    </select>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <button class="csv-btn" onclick="downloadCSV()" style="margin-bottom:0">📥 CSV</button>
+    <button class="report-btn" onclick="downloadReport()">📄 HTMLレポート</button>
+  </div>
   <div id="recordsList"></div>
 </div>
 
@@ -405,10 +423,13 @@ function removeEmail(i) {
 
 async function sendEmail(data) {
   if(!emailAddresses.length) return;
+  const [factory, line] = (data.location||'').split(' / ');
   const params = {
     to_email: emailAddresses.join(','),
     datetime: data.datetime,
     location: data.location,
+    factory: factory||'',
+    line: line||'',
     type: data.type,
     detail: data.detail,
     reporter: data.reporter,
@@ -538,11 +559,26 @@ function submitReport() {
   document.getElementById('datetime').value=now.toISOString().slice(0,16);
 }
 
+function getSorted() {
+  const sort = document.getElementById('sortSelect')?.value || 'new';
+  const arr = [...records];
+  if(sort==='new') arr.sort((a,b)=>b.id-a.id);
+  else if(sort==='old') arr.sort((a,b)=>a.id-b.id);
+  else if(sort==='factory') arr.sort((a,b)=>a.location.localeCompare(b.location,'ja'));
+  else if(sort==='type') arr.sort((a,b)=>a.type.localeCompare(b.type,'ja'));
+  else if(sort==='status') {
+    const order={'未対応':0,'対応中':1,'完了':2};
+    arr.sort((a,b)=>(order[a.status]??9)-(order[b.status]??9));
+  }
+  return arr;
+}
+
 function renderRecords() {
   const list=document.getElementById('recordsList');
   document.getElementById('recordCount').textContent=records.length+'件';
   if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
-  list.innerHTML=records.map(r=>`
+  const sorted=getSorted();
+  list.innerHTML=sorted.map(r=>`
     <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})">
       <div class="record-top">
         <span class="rec-type-badge">${r.type}</span>
@@ -582,6 +618,106 @@ function downloadCSV() {
   a.download='社内不適合記録_'+new Date().toISOString().slice(0,10)+'.csv';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   toast('✅ CSVをダウンロードしました');
+}
+
+// HTML Report
+function downloadReport() {
+  if(!records.length){toast('記録がありません',true);return;}
+  const sorted=getSorted();
+  const today=new Date().toLocaleDateString('ja-JP');
+  const total=records.length;
+  const mio=records.filter(r=>r.status==='未対応').length;
+  const mid=records.filter(r=>r.status==='対応中').length;
+  const done=records.filter(r=>r.status==='完了').length;
+
+  const typeColor={
+    '異物混入':'#e63946','設備トラブル':'#f4a261','品質不良':'#d4aa00','その他':'#2a9d8f'
+  };
+  const typeBg={
+    '異物混入':'#fff0f1','設備トラブル':'#fff8f0','品質不良':'#fffbea','その他':'#f0fbf9'
+  };
+  const stColor={'未対応':'#e63946','対応中':'#b8960a','完了':'#2a9d8f'};
+  const stBg={'未対応':'#fff0f1','対応中':'#fffbea','完了':'#f0fbf9'};
+  const leftColor={'異物混入':'#e63946','設備トラブル':'#f4a261','品質不良':'#d4aa00','その他':'#2a9d8f'};
+
+  const cards=sorted.map(r=>{
+    const photos=r.photos&&r.photos.length?`
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">
+        ${r.photos.map(p=>`<img src="${p}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px">`).join('')}
+      </div>`:''
+    ;
+    const hazards=r.hazards&&r.hazards.length?`
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">
+        ${r.hazards.map(h=>`<span style="background:#fff0f1;color:#a32d2d;font-size:11px;padding:2px 8px;border-radius:100px;font-weight:bold">${h}</span>`).join('')}
+      </div>`:''
+    ;
+    const cause=r.cause||r.action?`
+      <div style="border-top:1px solid #f0f2f5;padding-top:8px;margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+        ${r.cause?`<span style="background:#e8f0ff;color:#1a3a6b;font-size:11px;padding:3px 10px;border-radius:6px;font-weight:bold">📌 原因：${r.cause}</span>`:''}
+        ${r.action?`<span style="background:#e8f8f6;color:#2a9d8f;font-size:11px;padding:3px 10px;border-radius:6px;font-weight:bold">🛠 対策：${r.action}</span>`:''}
+      </div>`:''
+    ;
+    const caLabel=(r.cause&&r.action)?'✅ 対策済':(r.cause||r.action)?'📝 入力中':'⬜ 未入力';
+    const caBg=(r.cause&&r.action)?'#e8f8f6':(r.cause||r.action)?'#fffbea':'#f0f2f5';
+    const caColor=(r.cause&&r.action)?'#085041':(r.cause||r.action)?'#633806':'#5f5e5a';
+    return `
+    <div style="border:1px solid #e0e4eb;border-left:4px solid ${leftColor[r.type]||'#8a93a8'};border-radius:12px;padding:14px 16px;margin-bottom:12px;page-break-inside:avoid">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <span style="background:${typeBg[r.type]||'#f0f2f5'};color:${typeColor[r.type]||'#5a6478'};font-size:11px;font-weight:bold;padding:3px 10px;border-radius:100px">${r.type}</span>
+          <span style="background:${stBg[r.status]||'#f0f2f5'};color:${stColor[r.status]||'#5a6478'};font-size:11px;font-weight:bold;padding:3px 10px;border-radius:100px">${r.status}</span>
+          <span style="background:${caBg};color:${caColor};font-size:10px;font-weight:bold;padding:3px 8px;border-radius:100px">${caLabel}</span>
+        </div>
+        <span style="font-size:11px;color:#8a93a8">${r.datetime.replace('T',' ')}</span>
+      </div>
+      <div style="font-size:14px;font-weight:bold;margin-bottom:4px">📍 ${r.location}</div>
+      <div style="font-size:13px;color:#5a6478;line-height:1.6;margin-bottom:8px">${r.detail}</div>
+      ${hazards}
+      ${photos}
+      ${cause}
+      <div style="font-size:12px;color:#8a93a8;margin-top:6px">👤 ${r.reporter}</div>
+    </div>`;
+  }).join('');
+
+  const html=`<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8">
+<title>社内不適合 報告書 ${today}</title>
+<style>
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f0f2f5;margin:0;padding:20px;color:#1a1a2e}
+.wrap{max-width:800px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+header{background:#1a3a6b;padding:16px 24px;display:flex;align-items:center;gap:12px}
+.hbadge{background:#e63946;color:#fff;font-size:20px;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+header h1{color:#fff;font-size:16px;margin:0;font-weight:bold}
+header p{color:rgba(255,255,255,0.6);font-size:10px;margin:0;letter-spacing:0.08em}
+.date{margin-left:auto;color:rgba(255,255,255,0.5);font-size:11px}
+.body{padding:20px 24px}
+.summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.badge{font-size:12px;font-weight:bold;padding:4px 12px;border-radius:100px}
+@media print{body{background:#fff;padding:0}.wrap{box-shadow:none;border-radius:0}}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="hbadge">⚠️</div>
+  <div><h1>社内不適合 報告書</h1><p>FACTORY QUALITY REPORT</p></div>
+  <div class="date">出力日：${today}</div>
+</header>
+<div class="body">
+  <div class="summary">
+    <span class="badge" style="background:#e8f0ff;color:#1a3a6b">全${total}件</span>
+    <span class="badge" style="background:#fff0f1;color:#a32d2d">未対応 ${mio}件</span>
+    <span class="badge" style="background:#fffbea;color:#633806">対応中 ${mid}件</span>
+    <span class="badge" style="background:#e1f5ee;color:#085041">完了 ${done}件</span>
+  </div>
+  ${cards}
+</div>
+</div>
+</body></html>`;
+
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));
+  a.download='社内不適合報告書_'+new Date().toISOString().slice(0,10)+'.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast('✅ HTMLレポートをダウンロードしました');
 }
 
 // Edit modal
