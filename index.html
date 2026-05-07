@@ -60,7 +60,7 @@ transition:all 0.2s; margin-bottom:-2px;
 }
 .tab-btn.active { color:#1a3a6b; border-bottom-color:#1a3a6b; }
 
-.section { display:none; padding:16px; }
+.section { display:none; padding:16px; box-sizing:border-box; width:100%; }
 .section.active { display:block; }
 
 .card {
@@ -69,7 +69,8 @@ border-radius:16px;
 padding:16px;
 margin-bottom:12px;
 box-shadow:0 1px 4px rgba(0,0,0,0.08);
-overflow:hidden;
+box-sizing:border-box;
+width:100%;
 }
 .card-title {
 font-size:11px; font-weight:700;
@@ -85,6 +86,7 @@ input[type=“email”],
 textarea,
 select {
 width:100%;
+box-sizing:border-box;
 background:#f8f9fb;
 border:2px solid #e0e4eb;
 border-radius:12px;
@@ -98,6 +100,7 @@ transition:border-color 0.2s;
 appearance:none;
 min-height:50px;
 line-height:1.4;
+display:block;
 }
 
 select {
@@ -107,7 +110,7 @@ background-position:right 14px center;
 padding-right:40px;
 }
 input:focus, textarea:focus, select:focus { border-color:#1a3a6b; background:#fff; }
-textarea { min-height:90px; resize:none; line-height:1.7; max-width:100%; }
+textarea { min-height:90px; resize:none; line-height:1.7; width:100%; box-sizing:border-box; }
 
 .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .type-btn {
