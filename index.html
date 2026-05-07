@@ -184,6 +184,24 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAEm-nT-42TE1T_4EV4AkcHDaIVSlFtcVw",
+  authDomain: "factory-report-154b2.firebaseapp.com",
+  projectId: "factory-report-154b2",
+  storageBucket: "factory-report-154b2.firebasestorage.app",
+  messagingSenderId: "137569424627",
+  appId: "1:137569424627:web:9750c35a36c7eecd5a5386"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.__db = db;
+window.__fbFns = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query };
+</script>
 </head>
 <body>
 
@@ -455,8 +473,16 @@ window.onload = () => {
   const now = new Date();
   now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
   document.getElementById('datetime').value = now.toISOString().slice(0,16);
-  renderRecords();
   renderEmailList();
+  // Wait for Firebase module to load then fetch data
+  setTimeout(async () => {
+    if (window.__db) {
+      await fbLoad();
+    } else {
+      records = JSON.parse(localStorage.getItem('nr')||'[]');
+      renderRecords();
+    }
+  }, 800);
 };
 
 function showTab(name, btn) {
@@ -464,7 +490,7 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='records') renderRecords();
+  if(name==='records') { if(window.__db) fbLoad(); else renderRecords(); }
   if(name==='settings') renderEmailList();
 }
 
@@ -529,7 +555,7 @@ function setEmailToggle(val){
 }
 function getHazards(){return['拡散性あり','健康被害リスクあり','継続生産不可','作業者の怪我・怪我リスクあり'].filter((_,i)=>document.getElementById('hcb'+i).checked);}
 
-function submitReport() {
+async function submitReport() {
   const dt=document.getElementById('datetime').value;
   const fac=document.getElementById('factory').value;
   const ln=document.getElementById('line').value;
@@ -538,7 +564,12 @@ function submitReport() {
   if(!dt||!fac||!ln||!selType||!det||!rep||!selStatus){toast('すべての項目を入力してください',true);return;}
 
   const id=Date.now();
-  records.unshift({id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:''});
+  const newRecord = {id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:''};
+  if (window.__db) {
+    const fbId = await fbAdd(newRecord);
+    newRecord.fbId = fbId;
+  }
+  records.unshift(newRecord);
   localStorage.setItem('nr',JSON.stringify(records));
 
   if(document.getElementById('sendEmail').checked) {
@@ -750,12 +781,15 @@ function selectModalStatus(s) {
   ['未対応','対応中','完了'].forEach(x=>document.getElementById('ms-'+x).className='modal-status-btn'+(x===s?' sel-'+x:''));
 }
 
-function saveEdit() {
+async function saveEdit() {
   const idx=records.findIndex(r=>r.id===editId);if(idx<0)return;
   records[idx].cause=document.getElementById('modalCause').value.trim();
   records[idx].action=document.getElementById('modalAction').value.trim();
   records[idx].status=modalSt;
   localStorage.setItem('nr',JSON.stringify(records));
+  if (window.__db && records[idx].fbId) {
+    await fbUpdate(records[idx].fbId, {cause:records[idx].cause, action:records[idx].action, status:modalSt});
+  }
   closeEditModal();renderRecords();
   toast('✅ 保存しました');
 }
@@ -764,10 +798,14 @@ function saveEdit() {
 function openPw(id){delId=id;document.getElementById('pwInput').value='';document.getElementById('pwErr').style.display='none';document.getElementById('pwModal').classList.add('open');}
 function closePw(){document.getElementById('pwModal').classList.remove('open');delId=null;}
 
-function confirmDelete() {
+async function confirmDelete() {
   if(document.getElementById('pwInput').value!=='1125'){
     document.getElementById('pwErr').style.display='block';
     document.getElementById('pwInput').value='';return;
+  }
+  const target = records.find(r=>r.id===delId);
+  if (window.__db && target && target.fbId) {
+    await fbDelete(target.fbId);
   }
   records=records.filter(r=>r.id!==delId);
   localStorage.setItem('nr',JSON.stringify(records));
