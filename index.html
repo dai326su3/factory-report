@@ -313,7 +313,10 @@ window.__db = firebase.firestore();
 <div id="tab-records" class="section">
   <div class="records-header">
     <h2>報告一覧</h2>
-    <span class="rec-count" id="recordCount">0件</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="rec-count" id="recordCount">0件</span>
+      <button onclick="fbLoadAndMerge();this.textContent='⏳';setTimeout(()=>this.textContent='🔄',1500)" style="background:#e8f0ff;border:none;border-radius:8px;color:#1a3a6b;font-size:13px;font-weight:700;padding:4px 10px;cursor:pointer">🔄</button>
+    </div>
   </div>
   <div class="list-toolbar">
     <select class="sort-select" id="sortSelect" onchange="renderRecords()">
@@ -484,7 +487,7 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='records') renderRecords();
+  if(name==='records') { renderRecords(); fbLoadAndMerge(); }
   if(name==='settings') renderEmailList();
 }
 
@@ -589,12 +592,10 @@ function fbLoadAndMerge() {
         if (idx >= 0 && !localRecords[idx].fbId) { localRecords[idx].fbId = d.id; changed = true; }
       }
     });
-    if (changed) {
-      localRecords.sort((a,b) => b.id - a.id);
-      records = localRecords;
-      localStorage.setItem('nr', JSON.stringify(records));
-      renderRecords();
-    }
+    localRecords.sort((a,b) => b.id - a.id);
+    records = localRecords;
+    if (changed) localStorage.setItem('nr', JSON.stringify(records));
+    renderRecords();
   }).catch(e => console.warn('Firebase load failed', e.message));
 }
 
