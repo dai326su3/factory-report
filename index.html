@@ -9,232 +9,83 @@
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-body {
-  background:#f0f2f5;
-  color:#1a1a2e;
-  font-family:'Noto Sans JP', sans-serif;
-  min-height:100vh;
-  padding-bottom:48px;
-}
+body { background:#f0f2f5; color:#1a1a2e; font-family:'Noto Sans JP',sans-serif; min-height:100vh; padding-bottom:48px; }
 
-header {
-  background:#1a3a6b;
-  padding:14px 16px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-}
-.header-badge {
-  background:#e63946;
-  color:#fff;
-  font-size:20px;
-  width:38px; height:38px;
-  border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  flex-shrink:0;
-}
+/* HEADER */
+header { background:#1a3a6b; padding:14px 16px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+.hbadge { background:#e63946; color:#fff; font-size:20px; width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 header h1 { font-size:15px; font-weight:900; color:#fff; line-height:1.2; }
 header p { font-size:10px; color:rgba(255,255,255,0.6); letter-spacing:0.08em; }
 
-.tabs {
-  display:flex;
-  background:#fff;
-  border-bottom:2px solid #e0e4eb;
-  position:sticky;
-  top:66px;
-  z-index:99;
-}
-.tab-btn {
-  flex:1; padding:13px 4px;
-  background:none; border:none;
-  border-bottom:3px solid transparent;
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:12px; font-weight:700;
-  color:#8a93a8; cursor:pointer;
-  transition:all 0.2s; margin-bottom:-2px;
-}
+/* TABS */
+.tabs { display:flex; background:#fff; border-bottom:2px solid #e0e4eb; position:sticky; top:66px; z-index:99; }
+.tab-btn { flex:1; padding:13px 4px; background:none; border:none; border-bottom:3px solid transparent; font-family:'Noto Sans JP',sans-serif; font-size:12px; font-weight:700; color:#8a93a8; cursor:pointer; transition:all 0.2s; margin-bottom:-2px; }
 .tab-btn.active { color:#1a3a6b; border-bottom-color:#1a3a6b; }
 
+/* SECTIONS */
 .section { display:none; padding:16px; }
 .section.active { display:block; }
 
-.card {
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:12px;
-  box-shadow:0 1px 4px rgba(0,0,0,0.08);
-}
-.card-title {
-  font-size:11px; font-weight:700;
-  color:#8a93a8; letter-spacing:0.1em;
-  text-transform:uppercase; margin-bottom:12px;
-  display:flex; align-items:center; gap:6px;
-}
-.req { width:6px; height:6px; background:#e63946; border-radius:50%; display:inline-block; }
+/* CARD */
+.card { background:#fff; border-radius:16px; padding:16px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+.card-title { font-size:11px; font-weight:700; color:#8a93a8; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+.req { width:6px; height:6px; background:#e63946; border-radius:50%; display:inline-block; flex-shrink:0; }
 
-input[type="datetime-local"],
-input[type="text"],
-input[type="email"],
-textarea,
-select {
-  width:100%;
-  max-width:100%;
-  box-sizing:border-box;
-  background:#f8f9fb;
-  border:2px solid #e0e4eb;
-  border-radius:12px;
-  color:#1a1a2e;
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:16px;
-  padding:13px 14px;
-  outline:none;
-  transition:border-color 0.2s;
-  -webkit-appearance:none;
-  appearance:none;
-  min-height:50px;
-  line-height:1.4;
-  display:block;
+/* INPUTS */
+select, input[type="text"], input[type="datetime-local"], input[type="email"], textarea {
+  display:block; width:100%; box-sizing:border-box;
+  background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px;
+  color:#1a1a2e; font-family:'Noto Sans JP',sans-serif; font-size:16px;
+  padding:13px 14px; outline:none; transition:border-color 0.2s; -webkit-appearance:none; appearance:none;
 }
+select:focus, input:focus, textarea:focus { border-color:#1a3a6b; background:#fff; }
+select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a93a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }
+textarea { min-height:90px; resize:none; line-height:1.7; }
 
-select {
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a93a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 12px center;
-  padding-right:36px;
-  box-sizing:border-box;
-  max-width:100%;
-}
-input:focus, textarea:focus, select:focus { border-color:#1a3a6b; background:#fff; }
-textarea { min-height:90px; resize:none; line-height:1.7; width:100%; box-sizing:border-box; }
-
+/* TYPE BUTTONS */
 .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.type-btn {
-  background:#f8f9fb; border:2px solid #e0e4eb;
-  border-radius:14px; color:#5a6478;
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:14px; font-weight:700;
-  padding:16px 10px; cursor:pointer;
-  transition:all 0.15s;
-  display:flex; flex-direction:column; align-items:center; gap:6px;
-}
+.type-btn { background:#f8f9fb; border:2px solid #e0e4eb; border-radius:14px; color:#5a6478; font-family:'Noto Sans JP',sans-serif; font-size:14px; font-weight:700; padding:16px 10px; cursor:pointer; transition:all 0.15s; display:flex; flex-direction:column; align-items:center; gap:6px; width:100%; }
 .type-btn .icon { font-size:24px; }
 .type-btn.sel-異物混入 { border-color:#e63946; background:#fff0f1; color:#e63946; }
 .type-btn.sel-設備トラブル { border-color:#f4a261; background:#fff8f0; color:#f4a261; }
 .type-btn.sel-品質不良 { border-color:#d4aa00; background:#fffbea; color:#b8960a; }
 .type-btn.sel-その他 { border-color:#2a9d8f; background:#f0fbf9; color:#2a9d8f; }
 
+/* STATUS BUTTONS */
 .status-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
-.status-btn {
-  background:#f8f9fb; border:2px solid #e0e4eb;
-  border-radius:12px; color:#5a6478;
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:13px; font-weight:700;
-  padding:13px 6px; cursor:pointer;
-  transition:all 0.15s; text-align:center;
-}
+.status-btn { background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px; color:#5a6478; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:13px 6px; cursor:pointer; transition:all 0.15s; text-align:center; width:100%; }
 .status-btn.sel-未対応 { border-color:#e63946; background:#fff0f1; color:#e63946; }
 .status-btn.sel-対応中 { border-color:#d4aa00; background:#fffbea; color:#b8960a; }
 .status-btn.sel-完了 { border-color:#2a9d8f; background:#f0fbf9; color:#2a9d8f; }
 
-.hazard-item {
-  display:flex; align-items:center; gap:14px;
-  background:#f8f9fb; border:2px solid #e0e4eb;
-  border-radius:12px; padding:15px 16px;
-  margin-bottom:8px; cursor:pointer;
-  transition:all 0.15s;
-}
-.hazard-item.checked { border-color:#e63946; background:#fff0f1; }
-.hazard-item input[type="checkbox"] {
-  width:22px; height:22px; accent-color:#e63946;
-  flex-shrink:0; cursor:pointer;
-  border:none; padding:0; background:none;
-}
-.hazard-item .hlabel { font-size:15px; font-weight:500; color:#1a1a2e; }
-.hazard-item.checked .hlabel { color:#e63946; font-weight:700; }
-.hazard-alert {
-  display:none; background:#fff0f1; border:1px solid #e63946;
-  border-radius:10px; padding:10px 14px;
-  font-size:13px; color:#e63946; font-weight:700;
-  margin-top:8px; text-align:center;
-}
-.hazard-alert.visible { display:block; }
-
-.photo-upload-btn {
-  width:100%; background:#f8f9fb;
-  border:2px dashed #c0c8d8; border-radius:12px;
-  padding:20px; text-align:center; cursor:pointer; position:relative;
-}
-.photo-upload-btn input[type="file"] {
-  position:absolute; inset:0; opacity:0;
-  width:100%; height:100%; cursor:pointer;
-  border:none; background:none; padding:0; font-size:0;
-}
-.up-icon { font-size:30px; margin-bottom:6px; }
-.up-text { font-size:14px; font-weight:700; color:#1a3a6b; }
-.up-sub { font-size:11px; color:#8a93a8; margin-top:4px; }
-
+/* PHOTO */
+.photo-area { background:#f8f9fb; border:2px dashed #c0c8d8; border-radius:12px; padding:20px; text-align:center; cursor:pointer; display:block; width:100%; box-sizing:border-box; }
+.photo-area:active { background:#f0f2f8; }
 .photo-preview-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px; }
 .photo-thumb { position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden; }
 .photo-thumb img { width:100%; height:100%; object-fit:cover; }
-.photo-thumb .remove-btn {
-  position:absolute; top:4px; right:4px;
-  width:24px; height:24px;
-  background:rgba(0,0,0,0.6); border:none; border-radius:50%;
-  color:#fff; font-size:12px; cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-}
+.photo-thumb .remove-btn { position:absolute; top:4px; right:4px; width:24px; height:24px; background:rgba(0,0,0,0.6); border:none; border-radius:50%; color:#fff; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
 
-.toggle-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; }
-.toggle-label { font-size:15px; font-weight:500; }
-.toggle-switch { position:relative; width:50px; height:28px; flex-shrink:0; }
-.toggle-switch input { opacity:0; width:0; height:0; }
-.toggle-slider {
-  position:absolute; inset:0;
-  background:#d0d5e0; border-radius:100px; cursor:pointer; transition:background 0.2s;
-}
-.toggle-slider::before {
-  content:''; position:absolute;
-  width:22px; height:22px; left:3px; top:3px;
-  background:#fff; border-radius:50%; transition:transform 0.2s;
-  box-shadow:0 1px 3px rgba(0,0,0,0.2);
-}
-.toggle-switch input:checked + .toggle-slider { background:#2a9d8f; }
-.toggle-switch input:checked + .toggle-slider::before { transform:translateX(22px); }
+/* HAZARD */
+.hazard-item { display:flex; align-items:center; gap:14px; background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px; padding:15px 16px; margin-bottom:8px; cursor:pointer; transition:all 0.15s; }
+.hazard-item.checked { border-color:#e63946; background:#fff0f1; }
+.hazard-item input[type="checkbox"] { width:22px; height:22px; accent-color:#e63946; flex-shrink:0; cursor:pointer; background:none; border:none; padding:0; }
+.hazard-item .hlabel { font-size:15px; font-weight:500; color:#1a1a2e; }
+.hazard-item.checked .hlabel { color:#e63946; font-weight:700; }
 
-.gas-row { display:flex; gap:8px; }
-.gas-row input { flex:1; font-size:13px; }
-.save-btn {
-  background:#1a3a6b; border:none; border-radius:12px;
-  color:#fff; font-family:'Noto Sans JP',sans-serif;
-  font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap;
-}
-
-.submit-btn {
-  width:100%; background:#e63946; border:none; border-radius:16px;
-  color:#fff; font-family:'Noto Sans JP',sans-serif;
-  font-size:17px; font-weight:900; padding:18px; cursor:pointer;
-  letter-spacing:0.04em;
-  box-shadow:0 4px 14px rgba(230,57,70,0.35);
-  transition:opacity 0.2s, transform 0.1s;
-}
+/* SUBMIT */
+.submit-btn { display:block; width:100%; background:#e63946; border:none; border-radius:16px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:17px; font-weight:900; padding:18px; cursor:pointer; letter-spacing:0.04em; box-shadow:0 4px 14px rgba(230,57,70,0.35); transition:opacity 0.2s, transform 0.1s; }
 .submit-btn:active { transform:scale(0.98); opacity:0.9; }
-.submit-btn:disabled { opacity:0.4; }
 
-.records-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+/* RECORDS */
+.records-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
 .records-header h2 { font-size:16px; font-weight:900; }
 .rec-count { background:#1a3a6b; color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:100px; }
+.csv-btn { display:block; width:100%; background:#1a3a6b; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:14px; font-weight:700; padding:13px; cursor:pointer; margin-bottom:12px; }
+.csv-btn:active { opacity:0.85; }
 
-.record-card {
-  background:#fff; border-radius:16px; padding:14px 16px;
-  margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.08);
-  border-left:4px solid #e63946; cursor:pointer; transition:box-shadow 0.15s;
-}
-.record-card:active { box-shadow:0 2px 10px rgba(0,0,0,0.15); }
+.record-card { background:#fff; border-radius:16px; padding:14px 16px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.08); border-left:4px solid #e63946; cursor:pointer; }
+.record-card:active { opacity:0.85; }
 .record-card[data-type="設備トラブル"] { border-left-color:#f4a261; }
 .record-card[data-type="品質不良"] { border-left-color:#d4aa00; }
 .record-card[data-type="その他"] { border-left-color:#2a9d8f; }
@@ -258,166 +109,78 @@ textarea { min-height:90px; resize:none; line-height:1.7; width:100%; box-sizing
 .rec-datetime { font-size:11px; color:#8a93a8; margin-bottom:4px; }
 .rec-location { font-size:14px; font-weight:700; margin-bottom:4px; }
 .rec-detail { font-size:13px; color:#5a6478; line-height:1.5; margin-bottom:6px; }
-.rec-hint { font-size:11px; color:#b0b8c8; margin-top:8px; }
-.rec-footer { font-size:12px; color:#8a93a8; margin-top:8px; }
+.rec-hint { font-size:11px; color:#b0b8c8; margin-top:6px; }
+.rec-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+.rec-footer { font-size:12px; color:#8a93a8; }
+.del-btn { background:#fff0f1; border:1px solid #ffcdd2; border-radius:8px; color:#e63946; font-family:'Noto Sans JP',sans-serif; font-size:11px; font-weight:700; padding:4px 10px; cursor:pointer; }
 
 .hazard-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
 .hazard-tag { font-size:10px; font-weight:700; padding:2px 8px; border-radius:100px; background:#fff0f1; color:#e63946; }
-
 .rec-photos { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:8px; }
 .rec-photos img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; cursor:pointer; }
-
 .cause-row { margin-top:8px; padding-top:8px; border-top:1px solid #f0f2f5; display:flex; flex-wrap:wrap; gap:6px; }
-.cause-pill { font-size:11px; padding:3px 10px; border-radius:6px; font-weight:600; }
-.cp { background:#e8f0ff; color:#1a3a6b; }
-.ap { background:#e8f8f6; color:#2a9d8f; }
+.cp { font-size:11px; padding:3px 10px; border-radius:6px; font-weight:600; background:#e8f0ff; color:#1a3a6b; }
+.ap { font-size:11px; padding:3px 10px; border-radius:6px; font-weight:600; background:#e8f8f6; color:#2a9d8f; }
 
 .empty-state { text-align:center; padding:60px 20px; color:#b0b8c8; }
-.empty-state .e-icon { font-size:48px; margin-bottom:12px; }
+.empty-icon { font-size:48px; margin-bottom:12px; }
 
+/* MODAL (edit) */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:flex-end; }
 .modal-overlay.open { display:flex; }
-.modal-sheet {
-  background:#fff; border-radius:24px 24px 0 0;
-  padding:20px 16px 40px; width:100%;
-  max-height:88vh; overflow-y:auto;
-  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
-}
+.modal-sheet { background:#fff; border-radius:24px 24px 0 0; padding:20px 16px 40px; width:100%; max-height:88vh; overflow-y:auto; animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .modal-handle { width:40px; height:4px; background:#e0e4eb; border-radius:100px; margin:0 auto 18px; }
 .modal-title { font-size:17px; font-weight:900; margin-bottom:4px; }
 .modal-meta { font-size:12px; color:#8a93a8; margin-bottom:16px; }
 .modal-divider { height:1px; background:#f0f2f5; margin:14px 0; }
 .modal-label { font-size:11px; font-weight:700; color:#8a93a8; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; display:block; }
-
-.modal-status-btn {
-  background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px;
-  color:#5a6478; font-family:'Noto Sans JP',sans-serif;
-  font-size:13px; font-weight:700;
-  padding:13px 6px; cursor:pointer; transition:all 0.15s; text-align:center;
-}
+.modal-status-btn { background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px; color:#5a6478; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:13px 6px; cursor:pointer; transition:all 0.15s; text-align:center; width:100%; }
 .modal-status-btn.sel-未対応 { border-color:#e63946; background:#fff0f1; color:#e63946; }
 .modal-status-btn.sel-対応中 { border-color:#d4aa00; background:#fffbea; color:#b8960a; }
 .modal-status-btn.sel-完了 { border-color:#2a9d8f; background:#f0fbf9; color:#2a9d8f; }
+.modal-save-btn { display:block; width:100%; background:#1a3a6b; border:none; border-radius:14px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:16px; font-weight:700; padding:16px; cursor:pointer; margin-top:14px; }
+.modal-cancel-btn { display:block; width:100%; background:none; border:2px solid #e0e4eb; border-radius:14px; color:#8a93a8; font-family:'Noto Sans JP',sans-serif; font-size:14px; padding:13px; cursor:pointer; margin-top:8px; }
 
-.modal-save-btn {
-  width:100%; background:#1a3a6b; border:none; border-radius:14px;
-  color:#fff; font-family:'Noto Sans JP',sans-serif;
-  font-size:16px; font-weight:700; padding:16px; cursor:pointer; margin-top:14px;
-}
-.modal-cancel-btn {
-  width:100%; background:none; border:2px solid #e0e4eb; border-radius:14px;
-  color:#8a93a8; font-family:'Noto Sans JP',sans-serif;
-  font-size:14px; padding:13px; cursor:pointer; margin-top:8px;
-}
+/* PASSWORD MODAL */
+.pw-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:300; align-items:center; justify-content:center; padding:24px; }
+.pw-overlay.open { display:flex; }
+.pw-box { background:#fff; border-radius:20px; padding:28px 20px; width:100%; max-width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.15); }
+.pw-box h3 { font-size:16px; font-weight:900; margin-bottom:6px; }
+.pw-box p { font-size:13px; color:#8a93a8; margin-bottom:16px; }
+.pw-input { display:block; width:100%; box-sizing:border-box; background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px; font-family:'Noto Sans JP',sans-serif; font-size:22px; font-weight:700; padding:13px 14px; outline:none; text-align:center; letter-spacing:0.3em; margin-bottom:8px; -webkit-appearance:none; }
+.pw-input:focus { border-color:#e63946; }
+.pw-err { font-size:12px; color:#e63946; font-weight:700; text-align:center; margin-bottom:10px; display:none; }
+.pw-ok-btn { display:block; width:100%; background:#e63946; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:15px; font-weight:700; padding:14px; cursor:pointer; margin-bottom:8px; }
+.pw-ng-btn { display:block; width:100%; background:none; border:2px solid #e0e4eb; border-radius:12px; color:#8a93a8; font-family:'Noto Sans JP',sans-serif; font-size:14px; padding:12px; cursor:pointer; }
 
-.settings-title { font-size:13px; font-weight:700; color:#8a93a8; letter-spacing:0.1em; text-transform:uppercase; margin:0 0 12px; }
-.step-list { list-style:none; counter-reset:steps; }
-.step-list li {
-  counter-increment:steps; font-size:13px; color:#5a6478;
-  padding:10px 0 10px 32px; position:relative;
-  border-bottom:1px solid #f0f2f5; line-height:1.6;
-}
-.step-list li:last-child { border-bottom:none; }
-.step-list li::before {
-  content:counter(steps); position:absolute; left:0; top:10px;
-  width:20px; height:20px; background:#1a3a6b; border-radius:50%;
-  font-size:10px; font-weight:700; color:#fff;
-  display:flex; align-items:center; justify-content:center;
-}
-code {
-  display:block; background:#f8f9fb; padding:12px; border-radius:10px;
-  font-size:11px; color:#1a3a6b; word-break:break-all;
-  white-space:pre-wrap; line-height:1.6; border:1px solid #e0e4eb;
-}
-.copy-btn {
-  width:100%; background:#2a9d8f; border:none; border-radius:12px;
-  color:#fff; font-family:'Noto Sans JP',sans-serif;
-  font-size:14px; font-weight:700; padding:14px; cursor:pointer; margin-top:12px;
-}
-
-.email-item { display:flex; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid #f0f2f5; }
-.email-item:last-child { border-bottom:none; }
-.email-item span { flex:1; font-size:13px; word-break:break-all; }
-.email-remove { background:#fff0f1; border:none; border-radius:8px; color:#e63946; font-size:12px; font-weight:700; padding:5px 10px; cursor:pointer; flex-shrink:0; }
-.email-add-row { display:flex; gap:8px; margin-top:12px; }
-.email-add-row input { flex:1; font-size:14px; }
-.email-add-btn { background:#1a3a6b; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap; }
-
+/* LIGHTBOX */
 .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:999; align-items:center; justify-content:center; padding:20px; }
 .lightbox.open { display:flex; }
 .lightbox img { max-width:100%; max-height:90vh; border-radius:8px; object-fit:contain; }
 .lightbox-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; font-size:20px; width:40px; height:40px; border-radius:50%; cursor:pointer; }
 
-.toast {
-  position:fixed; bottom:28px; left:50%;
-  transform:translateX(-50%) translateY(80px);
-  background:#1a3a6b; color:#fff; font-weight:700; font-size:14px;
-  padding:13px 24px; border-radius:100px; z-index:999;
-  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap;
-}
+/* TOGGLE */
+.toggle-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; }
+.toggle-label { font-size:15px; font-weight:500; }
+.toggle-switch { position:relative; width:50px; height:28px; flex-shrink:0; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:#d0d5e0; border-radius:100px; cursor:pointer; transition:background 0.2s; }
+.toggle-slider::before { content:''; position:absolute; width:22px; height:22px; left:3px; top:3px; background:#fff; border-radius:50%; transition:transform 0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+.toggle-switch input:checked + .toggle-slider { background:#2a9d8f; }
+.toggle-switch input:checked + .toggle-slider::before { transform:translateX(22px); }
+
+/* TOAST */
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:#1a3a6b; color:#fff; font-weight:700; font-size:14px; padding:13px 24px; border-radius:100px; z-index:999; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast.err { background:#e63946; }
-
-  /* CSV & Delete */
-  .records-actions { display:flex; gap:8px; margin-bottom:12px; }
-  .csv-btn {
-    flex:1; background:#1a3a6b; border:none; border-radius:12px;
-    color:#fff; font-family:'Noto Sans JP',sans-serif;
-    font-size:13px; font-weight:700; padding:12px 8px; cursor:pointer;
-  }
-  .del-hint {
-    font-size:11px; color:#b0b8c8; text-align:center;
-    margin-bottom:12px;
-  }
-
-  /* Password modal */
-  .pw-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:300; align-items:center; justify-content:center; padding:24px; }
-  .pw-modal-overlay.open { display:flex; }
-  .pw-modal {
-    background:#fff; border-radius:20px; padding:28px 20px;
-    width:100%; max-width:340px;
-    box-shadow:0 8px 32px rgba(0,0,0,0.15);
-  }
-  .pw-modal h3 { font-size:16px; font-weight:900; margin-bottom:6px; }
-  .pw-modal p { font-size:13px; color:#8a93a8; margin-bottom:16px; }
-  .pw-input {
-    width:100%; box-sizing:border-box;
-    background:#f8f9fb; border:2px solid #e0e4eb;
-    border-radius:12px; font-family:'Noto Sans JP',sans-serif;
-    font-size:20px; font-weight:700; padding:13px 14px;
-    outline:none; text-align:center; letter-spacing:0.3em;
-    margin-bottom:12px;
-  }
-  .pw-input:focus { border-color:#e63946; }
-  .pw-confirm-btn {
-    width:100%; background:#e63946; border:none; border-radius:12px;
-    color:#fff; font-family:'Noto Sans JP',sans-serif;
-    font-size:15px; font-weight:700; padding:14px; cursor:pointer; margin-bottom:8px;
-  }
-  .pw-cancel-btn {
-    width:100%; background:none; border:2px solid #e0e4eb; border-radius:12px;
-    color:#8a93a8; font-family:'Noto Sans JP',sans-serif;
-    font-size:14px; padding:12px; cursor:pointer;
-  }
-  .pw-error { font-size:12px; color:#e63946; font-weight:700; text-align:center; margin-bottom:8px; display:none; }
-
-  /* Delete button on record card */
-  .rec-delete-btn {
-    display:inline-flex; align-items:center; gap:4px;
-    background:#fff0f1; border:1px solid #ffcdd2;
-    border-radius:8px; color:#e63946;
-    font-family:'Noto Sans JP',sans-serif;
-    font-size:11px; font-weight:700;
-    padding:4px 10px; cursor:pointer; margin-top:8px;
-  }
-
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
 <header>
-  <div class="header-badge">⚠️</div>
+  <div class="hbadge">⚠️</div>
   <div>
     <h1>社内不適合 報告システム</h1>
     <p>FACTORY QUALITY MANAGEMENT</p>
@@ -430,15 +193,8 @@ code {
   <button class="tab-btn" onclick="showTab('settings',this)">⚙️ 設定</button>
 </nav>
 
+<!-- 入力 -->
 <div id="tab-form" class="section active">
-
-  <div class="card">
-    <div class="card-title">🔗 Googleスプレッドシート連携</div>
-    <div class="gas-row">
-      <input type="text" id="gasUrl" placeholder="Google Apps Script の URL" />
-      <button class="save-btn" onclick="saveGasUrl()">保存</button>
-    </div>
-  </div>
 
   <div class="card">
     <div class="card-title">📅 発生日時 <span class="req"></span></div>
@@ -489,34 +245,33 @@ code {
 
   <div class="card">
     <div class="card-title">📷 写真（任意・最大3枚）</div>
-    <div class="photo-upload-btn" onclick="document.getElementById('photoInput').click()">
+    <label class="photo-area">
       <input type="file" accept="image/*" multiple id="photoInput" onchange="handlePhotos(event)" style="display:none" />
-      <div class="up-icon">📷</div>
-      <div class="up-text">タップしてカメラ起動 / 写真を選択</div>
-      <div class="up-sub">最大3枚まで</div>
-    </div>
+      <div style="font-size:30px;margin-bottom:6px">📷</div>
+      <div style="font-size:14px;font-weight:700;color:#1a3a6b">タップしてカメラ起動 / 写真を選択</div>
+      <div style="font-size:11px;color:#8a93a8;margin-top:4px">最大3枚まで</div>
+    </label>
     <div class="photo-preview-grid" id="previewGrid"></div>
   </div>
 
   <div class="card">
     <div class="card-title">⚠️ 危害判定</div>
-    <div id="hazard-0-wrap" class="hazard-item" onclick="toggleHazard(0)">
-      <input type="checkbox" id="hazard-0" onchange="onHazardChange()" onclick="event.stopPropagation()" />
+    <div id="h0" class="hazard-item" onclick="toggleHazard(0)">
+      <input type="checkbox" id="hcb0" onclick="event.stopPropagation()" onchange="onHazardChange()" />
       <span class="hlabel">拡散性あり</span>
     </div>
-    <div id="hazard-1-wrap" class="hazard-item" onclick="toggleHazard(1)">
-      <input type="checkbox" id="hazard-1" onchange="onHazardChange()" onclick="event.stopPropagation()" />
+    <div id="h1" class="hazard-item" onclick="toggleHazard(1)">
+      <input type="checkbox" id="hcb1" onclick="event.stopPropagation()" onchange="onHazardChange()" />
       <span class="hlabel">健康被害リスクあり</span>
     </div>
-    <div id="hazard-2-wrap" class="hazard-item" onclick="toggleHazard(2)">
-      <input type="checkbox" id="hazard-2" onchange="onHazardChange()" onclick="event.stopPropagation()" />
+    <div id="h2" class="hazard-item" onclick="toggleHazard(2)">
+      <input type="checkbox" id="hcb2" onclick="event.stopPropagation()" onchange="onHazardChange()" />
       <span class="hlabel">継続生産不可</span>
     </div>
-    <div id="hazard-3-wrap" class="hazard-item" onclick="toggleHazard(3)">
-      <input type="checkbox" id="hazard-3" onchange="onHazardChange()" onclick="event.stopPropagation()" />
+    <div id="h3" class="hazard-item" onclick="toggleHazard(3)">
+      <input type="checkbox" id="hcb3" onclick="event.stopPropagation()" onchange="onHazardChange()" />
       <span class="hlabel">作業者の怪我・怪我リスクあり</span>
     </div>
-    <div class="hazard-alert" id="hazardAlert">⚠️ 危害項目が選択されました。メール通知を自動でオンにしました。</div>
   </div>
 
   <div class="card">
@@ -529,99 +284,49 @@ code {
     </div>
   </div>
 
-  <button class="submit-btn" onclick="submitReport()">📤 報告を送信する</button>
+  <button class="submit-btn" onclick="submitReport()">📤 報告を記録する</button>
 </div>
 
+<!-- 記録一覧 -->
 <div id="tab-records" class="section">
   <div class="records-header">
     <h2>報告一覧</h2>
     <span class="rec-count" id="recordCount">0件</span>
   </div>
-  <div class="records-actions">
-    <button class="csv-btn" onclick="downloadCSV()">📥 CSVダウンロード</button>
-  </div>
-  <p class="del-hint">🗑 カードの削除ボタンはPW認証が必要です</p>
+  <button class="csv-btn" onclick="downloadCSV()">📥 CSVダウンロード（Excel用）</button>
   <div id="recordsList"></div>
 </div>
 
+<!-- 設定 -->
 <div id="tab-settings" class="section">
   <div class="card">
-    <p class="settings-title">📧 通知メールアドレス</p>
-    <div class="email-list" id="emailList"></div>
-    <div class="email-add-row">
-      <input type="email" id="newEmailInput" placeholder="メールアドレスを入力" />
-      <button class="email-add-btn" onclick="addEmail()">追加</button>
+    <div class="card-title">📧 通知メールアドレス</div>
+    <p style="font-size:13px;color:#5a6478;line-height:1.7;margin-bottom:12px">メール通知を送る宛先を登録してください。複数登録できます。</p>
+    <div id="emailList"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <input type="email" id="newEmail" placeholder="メールアドレスを入力" style="flex:1;font-size:14px" />
+      <button onclick="addEmail()" style="background:#1a3a6b;border:none;border-radius:12px;color:#fff;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;padding:0 16px;cursor:pointer;white-space:nowrap">追加</button>
     </div>
   </div>
 
   <div class="card">
-    <p class="settings-title">🔗 スプレッドシート連携手順</p>
-    <ul class="step-list">
-      <li>Googleドライブで新しいスプレッドシートを作成する</li>
-      <li>メニュー「拡張機能」→「Apps Script」を開く</li>
-      <li>下のコードをコピーして貼り付け、保存する</li>
-      <li>「デプロイ」→「新しいデプロイ」→「ウェブアプリ」を選択</li>
-      <li>アクセスできるユーザーを「全員」にしてデプロイ</li>
-      <li>発行されたURLを「入力」タブのURL欄に貼り付けて保存</li>
-    </ul>
+    <div class="card-title">📥 CSVについて</div>
+    <p style="font-size:13px;color:#5a6478;line-height:1.7">
+      「記録一覧」タブの「CSVダウンロード」ボタンを押すと、全記録をCSVファイルでダウンロードできます。<br><br>
+      ExcelやGoogleスプレッドシートで開けます。文字化け対策済みです。
+    </p>
   </div>
-
   <div class="card">
-    <p class="settings-title">📋 Apps Script コード</p>
-    <code id="gasCode">function doPost(e) {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
-
-    if (data.action === 'update_cause_action') {
-      var lastRow = sheet.getLastRow();
-      for (var i = 2; i &lt;= lastRow; i++) {
-        if (sheet.getRange(i, 1).getValue() === data.recordId) {
-          sheet.getRange(i, 7).setValue(data.status);
-          sheet.getRange(i, 9).setValue(data.cause);
-          sheet.getRange(i, 10).setValue(data.action);
-          break;
-        }
-      }
-      return ContentService.createTextOutput(JSON.stringify({result:'success'}))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','送信日時','原因','対策']);
-    }
-    var hazardText = data.hazards && data.hazards.length > 0 ? data.hazards.join(', ') : 'なし';
-    sheet.appendRow([
-      data.recordId, data.datetime, data.location, data.type,
-      data.detail, data.reporter, data.status,
-      new Date().toLocaleString('ja-JP'), '', ''
-    ]);
-
-    if (data.sendEmail && data.emails && data.emails.length > 0) {
-      var subject = '【社内不適合報告】' + data.type + ' - ' + data.location;
-      var body = '社内不適合が報告されました。\n\n'
-        + '【危害判定】' + hazardText + '\n\n'
-        + '発生日時：' + data.datetime + '\n'
-        + '発生場所：' + data.location + '\n'
-        + '種類：' + data.type + '\n'
-        + '詳細：' + data.detail + '\n'
-        + '発見者：' + data.reporter + '\n'
-        + '対処状況：' + data.status + '\n';
-      MailApp.sendEmail(data.emails.join(','), subject, body);
-    }
-
-    return ContentService.createTextOutput(JSON.stringify({result:'success'}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({result:'error',message:err.toString()}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}</code>
-    <button class="copy-btn" onclick="copyCode()">📋 コードをコピー</button>
+    <div class="card-title">🗑 削除パスワード</div>
+    <p style="font-size:13px;color:#5a6478;line-height:1.7">
+      記録の削除にはパスワードが必要です。<br>
+      パスワードは管理者にお問い合わせください。
+    </p>
   </div>
 </div>
 
-<div class="modal-overlay" id="editModal" onclick="closeEditModal(event)">
+<!-- 編集モーダル -->
+<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditModal()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitle"></div>
@@ -629,32 +334,33 @@ code {
     <div class="modal-divider"></div>
     <span class="modal-label">対処状況</span>
     <div class="status-grid" style="margin-bottom:16px">
-      <button class="modal-status-btn" id="mstatus-未対応" onclick="selectModalStatus('未対応')">🔴 未対応</button>
-      <button class="modal-status-btn" id="mstatus-対応中" onclick="selectModalStatus('対応中')">🟡 対応中</button>
-      <button class="modal-status-btn" id="mstatus-完了" onclick="selectModalStatus('完了')">🟢 完了</button>
+      <button class="modal-status-btn" id="ms-未対応" onclick="selectModalStatus('未対応')">🔴 未対応</button>
+      <button class="modal-status-btn" id="ms-対応中" onclick="selectModalStatus('対応中')">🟡 対応中</button>
+      <button class="modal-status-btn" id="ms-完了" onclick="selectModalStatus('完了')">🟢 完了</button>
     </div>
     <span class="modal-label">原因</span>
     <textarea id="modalCause" placeholder="発生原因を記入してください" style="min-height:80px;margin-bottom:14px"></textarea>
     <span class="modal-label">対策</span>
     <textarea id="modalAction" placeholder="再発防止・対処内容を記入してください" style="min-height:80px"></textarea>
-    <button class="modal-save-btn" onclick="saveEditModal()">✅ 保存する</button>
-    <button class="modal-cancel-btn" onclick="document.getElementById('editModal').classList.remove('open')">キャンセル</button>
+    <button class="modal-save-btn" onclick="saveEdit()">✅ 保存する</button>
+    <button class="modal-cancel-btn" onclick="closeEditModal()">キャンセル</button>
   </div>
 </div>
 
-<div class="pw-modal-overlay" id="pwModal">
-  <div class="pw-modal">
+<!-- パスワードモーダル -->
+<div class="pw-overlay" id="pwModal" onclick="if(event.target===this)closePw()">
+  <div class="pw-box">
     <h3>🔐 削除の確認</h3>
     <p>削除するにはパスワードを入力してください</p>
-    <input type="password" class="pw-input" id="pwInput" placeholder="••••" maxlength="10"
-      oninput="document.getElementById('pwError').style.display='none'" />
-    <p class="pw-error" id="pwError">パスワードが違います</p>
-    <button class="pw-confirm-btn" onclick="confirmDelete()">削除する</button>
-    <button class="pw-cancel-btn" onclick="closePwModal()">キャンセル</button>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••" maxlength="10" oninput="document.getElementById('pwErr').style.display='none'" />
+    <div class="pw-err" id="pwErr">パスワードが違います</div>
+    <button class="pw-ok-btn" onclick="confirmDelete()">削除する</button>
+    <button class="pw-ng-btn" onclick="closePw()">キャンセル</button>
   </div>
 </div>
 
-<div class="lightbox"  id="lightbox" onclick="closeLightbox()">
+<!-- ライトボックス -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close">✕</button>
   <img id="lightboxImg" src="" />
 </div>
@@ -662,280 +368,276 @@ code {
 <div class="toast" id="toast"></div>
 
 <script>
-  const factoryLines = {
-    '卸パン工場': ['菓子パン仕込','食パン仕込','HM成形','R成形','成形','V成形','AD成形','食パン成形','菓子パンオーブン','RMCオーブン','食パンオーブン','食パン包装','菓子パン包装','R包装','MC包装','サンドライン','その他'],
-    '菓子パン2課工場': ['仕込','HM成形','プルファー成形','フライヤー','オーブン','包装'],
-    '和洋菓子工場': ['和菓子','洋菓子']
-  };
+// EmailJS
+emailjs.init('Pg8zQVS-AA9bjp1ki');
+const EMAILJS_SERVICE = 'service_7l6h5bs';
+const EMAILJS_TEMPLATE = 'template_c2nqwqd';
 
-  let selectedType='', selectedStatus='', selectedPhotos=[];
-  let records = JSON.parse(localStorage.getItem('factory_records')||'[]');
-  let emailAddresses = JSON.parse(localStorage.getItem('email_addresses')||'[]');
-  let editingId=null, modalStatus='';
+let emailAddresses = JSON.parse(localStorage.getItem('emails')||'[]');
 
-  window.onload = () => {
-    const now=new Date(); now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
-    document.getElementById('datetime').value = now.toISOString().slice(0,16);
-    document.getElementById('gasUrl').value = localStorage.getItem('gas_url')||'';
-    renderRecords(); renderEmailList();
-  };
-
-  function showTab(name,btn) {
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab-'+name).classList.add('active');
-    btn.classList.add('active');
-    if(name==='records') renderRecords();
-    if(name==='settings') renderEmailList();
-  }
-
-  function updateLines() {
-    const factory=document.getElementById('factory').value;
-    const lineSelect=document.getElementById('line');
-    if(!factory){lineSelect.innerHTML='<option value="">先に工場を選択してください</option>';lineSelect.disabled=true;return;}
-    lineSelect.innerHTML='<option value="">ラインを選択してください</option>'+(factoryLines[factory]||[]).map(l=>`<option value="${l}">${l}</option>`).join('');
-    lineSelect.disabled=false;
-  }
-
-  function selectType(type) {
-    selectedType=type;
-    document.querySelectorAll('.type-btn').forEach(b=>{b.className='type-btn';if(b.textContent.trim().includes(type))b.className='type-btn sel-'+type;});
-  }
-
-  function selectStatus(status) {
-    selectedStatus=status;
-    document.querySelectorAll('.status-btn').forEach(b=>{b.className='status-btn';if(b.textContent.trim().includes(status))b.className='status-btn sel-'+status;});
-  }
-
-  function saveGasUrl(){localStorage.setItem('gas_url',document.getElementById('gasUrl').value.trim());showToast('URLを保存しました ✓');}
-
-  function handlePhotos(e) {
-    const remaining=3-selectedPhotos.length;
-    if(remaining<=0){showToast('写真は最大3枚です',true);return;}
-    Array.from(e.target.files).slice(0,remaining).forEach(file=>{
-      const reader=new FileReader();
-      reader.onload=ev=>compressImage(ev.target.result,c=>{selectedPhotos.push(c);renderPhotoPreview();});
-      reader.readAsDataURL(file);
-    });
-    e.target.value='';
-  }
-
-  function compressImage(dataUrl,cb){
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=document.createElement('canvas');const max=800;
-      let w=img.width,h=img.height;
-      if(w>h&&w>max){h=h*max/w;w=max;}else if(h>max){w=w*max/h;h=max;}
-      canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
-      cb(canvas.toDataURL('image/jpeg',0.7));
-    };img.src=dataUrl;
-  }
-
-  function renderPhotoPreview(){
-    document.getElementById('previewGrid').innerHTML=selectedPhotos.map((src,i)=>
-      `<div class="photo-thumb"><img src="${src}" onclick="openLightbox('${src}')"/><button class="remove-btn" onclick="removePhoto(${i})">✕</button></div>`
-    ).join('');
-  }
-
-  function removePhoto(i){selectedPhotos.splice(i,1);renderPhotoPreview();}
-  function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
-  function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
-
-  function toggleHazard(i){const cb=document.getElementById('hazard-'+i);cb.checked=!cb.checked;onHazardChange();}
-  function onHazardChange(){
-    [0,1,2,3].forEach(i=>document.getElementById('hazard-'+i+'-wrap').classList.toggle('checked',document.getElementById('hazard-'+i).checked));
-    const any=[0,1,2,3].some(i=>document.getElementById('hazard-'+i).checked);
-    document.getElementById('hazardAlert').classList.toggle('visible',any);
-    if(any)document.getElementById('sendEmail').checked=true;
-  }
-  function getHazards(){return['拡散性あり','健康被害リスクあり','継続生産不可','作業者の怪我・怪我リスクあり'].filter((_,i)=>document.getElementById('hazard-'+i).checked);}
-
-  async function submitReport(){
-    const datetime=document.getElementById('datetime').value;
-    const factory=document.getElementById('factory').value;
-    const line=document.getElementById('line').value;
-    const location=factory&&line?factory+' / '+line:'';
-    const detail=document.getElementById('detail').value.trim();
-    const reporter=document.getElementById('reporter').value.trim();
-    if(!datetime||!factory||!line||!selectedType||!detail||!reporter||!selectedStatus){showToast('すべての項目を入力してください',true);return;}
-
-    const recordId=String(Date.now());
-    const data={action:'new',recordId,datetime,location,type:selectedType,detail,reporter,status:selectedStatus,photos:selectedPhotos,sendEmail:document.getElementById('sendEmail').checked,emails:emailAddresses,hazards:getHazards()};
-    records.unshift({...data,id:Number(recordId)});
-    localStorage.setItem('factory_records',JSON.stringify(records));
-
-    const gasUrl=localStorage.getItem('gas_url');
-    if(gasUrl){
-      try{
-        const btn=document.querySelector('.submit-btn');btn.textContent='送信中...';btn.disabled=true;
-        await fetch(gasUrl,{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}});
-        btn.textContent='📤 報告を送信する';btn.disabled=false;
-        showToast('✅ スプレッドシートに送信しました！');
-      }catch(e){
-        document.querySelector('.submit-btn').textContent='📤 報告を送信する';
-        document.querySelector('.submit-btn').disabled=false;
-        showToast('⚠️ 送信失敗（記録は保存済み）',true);
-      }
-    }else{showToast('✅ 記録を保存しました！');}
-
-    [0,1,2,3].forEach(i=>{document.getElementById('hazard-'+i).checked=false;document.getElementById('hazard-'+i+'-wrap').classList.remove('checked');});
-    document.getElementById('hazardAlert').classList.remove('visible');
-    document.getElementById('sendEmail').checked=false;
-    document.getElementById('factory').value='';
-    document.getElementById('line').innerHTML='<option value="">先に工場を選択してください</option>';
-    document.getElementById('line').disabled=true;
-    document.getElementById('detail').value='';document.getElementById('reporter').value='';
-    selectedType='';selectedStatus='';selectedPhotos=[];
-    document.getElementById('previewGrid').innerHTML='';
-    document.querySelectorAll('.type-btn').forEach(b=>b.className='type-btn');
-    document.querySelectorAll('.status-btn').forEach(b=>b.className='status-btn');
-    const now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
-    document.getElementById('datetime').value=now.toISOString().slice(0,16);
-  }
-
-  function renderRecords(){
-    const list=document.getElementById('recordsList');
-    document.getElementById('recordCount').textContent=records.length+'件';
-    if(records.length===0){list.innerHTML='<div class="empty-state"><div class="e-icon">📋</div><p>まだ記録がありません</p></div>';return;}
-    list.innerHTML=records.map(r=>`
-      <div class="record-card" data-type="${r.type}" onclick="openEditModal(${r.id})">
-        <div class="record-top">
-          <span class="rec-type-badge">${r.type}</span>
-          <div class="badge-row">
-            <span class="status-badge sb-${r.status}">${r.status}</span>
-            ${(r.cause&&r.action)?'<span class="ca-badge ca-done">✅ 対策済</span>':(r.cause||r.action)?'<span class="ca-badge ca-partial">📝 入力中</span>':'<span class="ca-badge ca-none">⬜ 未入力</span>'}
-          </div>
-        </div>
-        <div class="rec-datetime">📅 ${r.datetime.replace('T',' ')}</div>
-        <div class="rec-location">📍 ${r.location}</div>
-        <div class="rec-detail">${r.detail}</div>
-        ${r.hazards&&r.hazards.length>0?`<div class="hazard-tags">${r.hazards.map(h=>`<span class="hazard-tag">${h}</span>`).join('')}</div>`:''}
-        ${r.photos&&r.photos.length>0?`<div class="rec-photos">${r.photos.map(p=>`<img src="${p}" onclick="event.stopPropagation();openLightbox('${p}')"/>`).join('')}</div>`:''}
-        ${r.cause||r.action?`<div class="cause-row">${r.cause?`<span class="cause-pill cp">📌 原因：${r.cause.slice(0,25)}${r.cause.length>25?'…':''}</span>`:''} ${r.action?`<span class="cause-pill ap">🛠 対策：${r.action.slice(0,25)}${r.action.length>25?'…':''}</span>`:''}</div>`:'<div class="rec-hint">📝 タップして原因・対策を入力</div>'}
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-          <span class="rec-footer">👤 ${r.reporter}</span>
-          <button class="rec-delete-btn" onclick="event.stopPropagation();openPwModal(${r.id})">🗑 削除</button>
-        </div>
+function renderEmailList() {
+  const list = document.getElementById('emailList');
+  if(!list) return;
+  list.innerHTML = emailAddresses.length===0
+    ? '<p style="font-size:13px;color:#8a93a8;padding:4px 0">まだ登録されていません</p>'
+    : emailAddresses.map((e,i)=>`
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #f0f2f5">
+        <span style="flex:1;font-size:13px;word-break:break-all">📧 ${e}</span>
+        <button onclick="removeEmail(${i})" style="background:#fff0f1;border:none;border-radius:8px;color:#e63946;font-size:12px;font-weight:700;padding:5px 10px;cursor:pointer">削除</button>
       </div>`).join('');
-  }
+}
 
-  function selectModalStatus(status){
-    modalStatus=status;
-    ['未対応','対応中','完了'].forEach(s=>document.getElementById('mstatus-'+s).className='modal-status-btn'+(s===status?' sel-'+s:''));
-  }
+function addEmail() {
+  const input = document.getElementById('newEmail');
+  const email = input.value.trim();
+  if(!email||!email.includes('@')){toast('正しいアドレスを入力してください',true);return;}
+  if(emailAddresses.includes(email)){toast('すでに登録済みです',true);return;}
+  emailAddresses.push(email);
+  localStorage.setItem('emails',JSON.stringify(emailAddresses));
+  input.value=''; renderEmailList(); toast('追加しました ✓');
+}
 
-  function openEditModal(id){
-    const r=records.find(r=>r.id===id);if(!r)return;
-    editingId=id;
-    document.getElementById('modalTitle').textContent=r.type+'｜'+r.location;
-    document.getElementById('modalMeta').textContent=r.datetime.replace('T',' ')+'　👤 '+r.reporter;
-    document.getElementById('modalCause').value=r.cause||'';
-    document.getElementById('modalAction').value=r.action||'';
-    selectModalStatus(r.status||'未対応');
-    document.getElementById('editModal').classList.add('open');
-  }
+function removeEmail(i) {
+  emailAddresses.splice(i,1);
+  localStorage.setItem('emails',JSON.stringify(emailAddresses));
+  renderEmailList();
+}
 
-  function closeEditModal(e){if(e.target===document.getElementById('editModal'))document.getElementById('editModal').classList.remove('open');}
+async function sendEmail(data) {
+  if(!emailAddresses.length) return;
+  const params = {
+    to_email: emailAddresses.join(','),
+    datetime: data.datetime,
+    location: data.location,
+    type: data.type,
+    detail: data.detail,
+    reporter: data.reporter,
+    status: data.status,
+    hazards: data.hazards.length ? data.hazards.join(', ') : 'なし'
+  };
+  await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, params);
+}
 
-  async function saveEditModal(){
-    const cause=document.getElementById('modalCause').value.trim();
-    const action=document.getElementById('modalAction').value.trim();
-    const idx=records.findIndex(r=>r.id===editingId);if(idx===-1)return;
-    records[idx].cause=cause;records[idx].action=action;records[idx].status=modalStatus;
-    localStorage.setItem('factory_records',JSON.stringify(records));
-    document.getElementById('editModal').classList.remove('open');
-    renderRecords();
-    const gasUrl=localStorage.getItem('gas_url');
-    if(gasUrl){
-      try{
-        await fetch(gasUrl,{method:'POST', mode:'no-cors', body:JSON.stringify({action:'update_cause_action',recordId:String(editingId),cause,action,status:modalStatus}),headers:{'Content-Type':'text/plain'}});
-        showToast('✅ スプレッドシートに保存しました');
-      }catch(e){showToast('✅ 保存済み（シート送信失敗）',true);}
-    }else{showToast('✅ 原因・対策を保存しました');}
-  }
+const factoryLines = {
+  '卸パン工場':['菓子パン仕込','食パン仕込','HM成形','R成形','成形','V成形','AD成形','食パン成形','菓子パンオーブン','RMCオーブン','食パンオーブン','食パン包装','菓子パン包装','R包装','MC包装','サンドライン','その他'],
+  '菓子パン2課工場':['仕込','HM成形','プルファー成形','フライヤー','オーブン','包装'],
+  '和洋菓子工場':['和菓子','洋菓子']
+};
 
-  function renderEmailList(){
-    const list=document.getElementById('emailList');if(!list)return;
-    list.innerHTML=emailAddresses.length===0
-      ?'<p style="font-size:13px;color:#8a93a8;padding:8px 0">まだ登録されていません</p>'
-      :emailAddresses.map((e,i)=>`<div class="email-item"><span>📧 ${e}</span><button class="email-remove" onclick="removeEmail(${i})">削除</button></div>`).join('');
-  }
+let selType='', selStatus='', selPhotos=[];
+let records = JSON.parse(localStorage.getItem('nr')||'[]');
+let editId=null, modalSt='', delId=null;
 
-  function addEmail(){
-    const input=document.getElementById('newEmailInput');const email=input.value.trim();
-    if(!email||!email.includes('@')){showToast('正しいアドレスを入力してください',true);return;}
-    if(emailAddresses.includes(email)){showToast('すでに登録済みです',true);return;}
-    emailAddresses.push(email);localStorage.setItem('email_addresses',JSON.stringify(emailAddresses));
-    input.value='';renderEmailList();showToast('追加しました ✓');
-  }
+window.onload = () => {
+  const now = new Date();
+  now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+  document.getElementById('datetime').value = now.toISOString().slice(0,16);
+  renderRecords();
+  renderEmailList();
+};
 
-  function removeEmail(i){emailAddresses.splice(i,1);localStorage.setItem('email_addresses',JSON.stringify(emailAddresses));renderEmailList();}
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='records') renderRecords();
+  if(name==='settings') renderEmailList();
+}
 
-  // CSV Download
-  function downloadCSV() {
-    if (records.length === 0) { showToast('記録がありません', true); return; }
-    const headers = ['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','危害判定','原因','対策'];
-    const rows = records.map(r => [
-      r.id, r.datetime, r.location, r.type,
-      '"' + (r.detail||'').replace(/"/g,'""') + '"',
-      r.reporter, r.status,
-      '"' + (r.hazards||[]).join(', ') + '"',
-      '"' + (r.cause||'').replace(/"/g,'""') + '"',
-      '"' + (r.action||'').replace(/"/g,'""') + '"'
-    ].join(','));
-    const bom = '﻿';
-    const csv = bom + headers.join(',') + '
-' + rows.join('
-');
-    const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = '社内不適合記録_' + new Date().toISOString().slice(0,10) + '.csv';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('✅ CSVをダウンロードしました');
-  }
+function updateLines() {
+  const f = document.getElementById('factory').value;
+  const l = document.getElementById('line');
+  if(!f){l.innerHTML='<option value="">先に工場を選択してください</option>';l.disabled=true;return;}
+  l.innerHTML='<option value="">ラインを選択してください</option>'+(factoryLines[f]||[]).map(x=>`<option value="${x}">${x}</option>`).join('');
+  l.disabled=false;
+}
 
-  // Delete with password
-  let deletingId = null;
+function selectType(t) {
+  selType=t;
+  document.querySelectorAll('.type-btn').forEach(b=>{b.className='type-btn';if(b.textContent.trim().includes(t))b.className='type-btn sel-'+t;});
+}
 
-  function openPwModal(id) {
-    deletingId = id;
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwError').style.display = 'none';
-    document.getElementById('pwModal').classList.add('open');
-    setTimeout(() => document.getElementById('pwInput').focus(), 300);
-  }
+function selectStatus(s) {
+  selStatus=s;
+  document.querySelectorAll('.status-btn').forEach(b=>{b.className='status-btn';if(b.textContent.trim().includes(s))b.className='status-btn sel-'+s;});
+}
 
-  function closePwModal() {
-    document.getElementById('pwModal').classList.remove('open');
-    deletingId = null;
-  }
+function handlePhotos(e) {
+  const rem = 3-selPhotos.length;
+  if(rem<=0){toast('写真は最大3枚です',true);return;}
+  Array.from(e.target.files).slice(0,rem).forEach(f=>{
+    const r=new FileReader();
+    r.onload=ev=>compress(ev.target.result,c=>{selPhotos.push(c);renderPreview();});
+    r.readAsDataURL(f);
+  });
+  e.target.value='';
+}
 
-  function confirmDelete() {
-    const pw = document.getElementById('pwInput').value;
-    if (pw !== '1125') {
-      document.getElementById('pwError').style.display = 'block';
-      document.getElementById('pwInput').value = '';
-      return;
+function compress(src,cb) {
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas');const m=800;
+    let w=img.width,h=img.height;
+    if(w>h&&w>m){h=h*m/w;w=m;}else if(h>m){w=w*m/h;h=m;}
+    c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+    cb(c.toDataURL('image/jpeg',0.7));
+  };img.src=src;
+}
+
+function renderPreview() {
+  document.getElementById('previewGrid').innerHTML=selPhotos.map((s,i)=>
+    `<div class="photo-thumb"><img src="${s}" onclick="openLightbox('${s}')"/><button class="remove-btn" onclick="event.stopPropagation();removePhoto(${i})">✕</button></div>`
+  ).join('');
+}
+
+function removePhoto(i){selPhotos.splice(i,1);renderPreview();}
+
+function toggleHazard(i){const cb=document.getElementById('hcb'+i);cb.checked=!cb.checked;onHazardChange();}
+function onHazardChange(){[0,1,2,3].forEach(i=>document.getElementById('h'+i).classList.toggle('checked',document.getElementById('hcb'+i).checked));}
+function getHazards(){return['拡散性あり','健康被害リスクあり','継続生産不可','作業者の怪我・怪我リスクあり'].filter((_,i)=>document.getElementById('hcb'+i).checked);}
+
+function submitReport() {
+  const dt=document.getElementById('datetime').value;
+  const fac=document.getElementById('factory').value;
+  const ln=document.getElementById('line').value;
+  const det=document.getElementById('detail').value.trim();
+  const rep=document.getElementById('reporter').value.trim();
+  if(!dt||!fac||!ln||!selType||!det||!rep||!selStatus){toast('すべての項目を入力してください',true);return;}
+
+  const id=Date.now();
+  records.unshift({id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:''});
+  localStorage.setItem('nr',JSON.stringify(records));
+
+  if(document.getElementById('sendEmail').checked) {
+    if(!emailAddresses.length){
+      toast('⚠️ 記録済み（送信先未登録）',true);
+    } else {
+      toast('📧 送信中...');
+      sendEmail({datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,hazards:getHazards()})
+        .then(()=>toast('✅ 記録・メール送信しました！'))
+        .catch(()=>toast('⚠️ 記録済み（メール失敗）',true));
     }
-    records = records.filter(r => r.id !== deletingId);
-    localStorage.setItem('factory_records', JSON.stringify(records));
-    closePwModal();
-    renderRecords();
-    showToast('🗑 削除しました');
+  } else {
+    toast('✅ 記録しました！');
   }
 
-  function showToast(msg,isErr=false){
-    const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isErr?' err':'');t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),3000);
-  }
+  // reset
+  [0,1,2,3].forEach(i=>{document.getElementById('hcb'+i).checked=false;document.getElementById('h'+i).classList.remove('checked');});
+  document.getElementById('sendEmail').checked=false;
+  document.getElementById('factory').value='';
+  document.getElementById('line').innerHTML='<option value="">先に工場を選択してください</option>';
+  document.getElementById('line').disabled=true;
+  document.getElementById('detail').value='';
+  document.getElementById('reporter').value='';
+  selType='';selStatus='';selPhotos=[];
+  document.getElementById('previewGrid').innerHTML='';
+  document.querySelectorAll('.type-btn').forEach(b=>b.className='type-btn');
+  document.querySelectorAll('.status-btn').forEach(b=>b.className='status-btn');
+  const now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());
+  document.getElementById('datetime').value=now.toISOString().slice(0,16);
+}
 
-  function copyCode(){
-    const raw=document.getElementById('gasCode').textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
-    navigator.clipboard.writeText(raw).then(()=>showToast('コードをコピーしました ✓'));
+function renderRecords() {
+  const list=document.getElementById('recordsList');
+  document.getElementById('recordCount').textContent=records.length+'件';
+  if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
+  list.innerHTML=records.map(r=>`
+    <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})">
+      <div class="record-top">
+        <span class="rec-type-badge">${r.type}</span>
+        <div class="badge-row">
+          <span class="status-badge sb-${r.status}">${r.status}</span>
+          ${(r.cause&&r.action)?'<span class="ca-badge ca-done">✅ 対策済</span>':(r.cause||r.action)?'<span class="ca-badge ca-partial">📝 入力中</span>':'<span class="ca-badge ca-none">⬜ 未入力</span>'}
+        </div>
+      </div>
+      <div class="rec-datetime">📅 ${r.datetime.replace('T',' ')}</div>
+      <div class="rec-location">📍 ${r.location}</div>
+      <div class="rec-detail">${r.detail}</div>
+      ${r.hazards&&r.hazards.length?`<div class="hazard-tags">${r.hazards.map(h=>`<span class="hazard-tag">${h}</span>`).join('')}</div>`:''}
+      ${r.photos&&r.photos.length?`<div class="rec-photos">${r.photos.map(p=>`<img src="${p}" onclick="event.stopPropagation();openLightbox('${p}')"/>`).join('')}</div>`:''}
+      ${r.cause||r.action?`<div class="cause-row">${r.cause?`<span class="cp">📌 原因：${r.cause.slice(0,25)}${r.cause.length>25?'…':''}</span>`:''} ${r.action?`<span class="ap">🛠 対策：${r.action.slice(0,25)}${r.action.length>25?'…':''}</span>`:''}</div>`:'<div class="rec-hint">📝 タップして原因・対策を入力</div>'}
+      <div class="rec-bottom">
+        <span class="rec-footer">👤 ${r.reporter}</span>
+        <button class="del-btn" onclick="event.stopPropagation();openPw(${r.id})">🗑 削除</button>
+      </div>
+    </div>`).join('');
+}
+
+// CSV
+function downloadCSV() {
+  if(!records.length){toast('記録がありません',true);return;}
+  const h=['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','危害判定','原因','対策'];
+  const rows=records.map(r=>[
+    r.id,r.datetime,r.location,r.type,
+    '"'+(r.detail||'').replace(/"/g,'""')+'"',
+    r.reporter,r.status,
+    '"'+(r.hazards||[]).join(', ')+'"',
+    '"'+(r.cause||'').replace(/"/g,'""')+'"',
+    '"'+(r.action||'').replace(/"/g,'""')+'"'
+  ].join(','));
+  const csv='\uFEFF'+h.join(',')+'\n'+rows.join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='社内不適合記録_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  toast('✅ CSVをダウンロードしました');
+}
+
+// Edit modal
+function openEdit(id) {
+  const r=records.find(x=>x.id===id);if(!r)return;
+  editId=id;
+  document.getElementById('modalTitle').textContent=r.type+'｜'+r.location;
+  document.getElementById('modalMeta').textContent=r.datetime.replace('T',' ')+'　👤 '+r.reporter;
+  document.getElementById('modalCause').value=r.cause||'';
+  document.getElementById('modalAction').value=r.action||'';
+  selectModalStatus(r.status||'未対応');
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal(){document.getElementById('editModal').classList.remove('open');}
+
+function selectModalStatus(s) {
+  modalSt=s;
+  ['未対応','対応中','完了'].forEach(x=>document.getElementById('ms-'+x).className='modal-status-btn'+(x===s?' sel-'+x:''));
+}
+
+function saveEdit() {
+  const idx=records.findIndex(r=>r.id===editId);if(idx<0)return;
+  records[idx].cause=document.getElementById('modalCause').value.trim();
+  records[idx].action=document.getElementById('modalAction').value.trim();
+  records[idx].status=modalSt;
+  localStorage.setItem('nr',JSON.stringify(records));
+  closeEditModal();renderRecords();
+  toast('✅ 保存しました');
+}
+
+// Password delete
+function openPw(id){delId=id;document.getElementById('pwInput').value='';document.getElementById('pwErr').style.display='none';document.getElementById('pwModal').classList.add('open');}
+function closePw(){document.getElementById('pwModal').classList.remove('open');delId=null;}
+
+function confirmDelete() {
+  if(document.getElementById('pwInput').value!=='1125'){
+    document.getElementById('pwErr').style.display='block';
+    document.getElementById('pwInput').value='';return;
   }
+  records=records.filter(r=>r.id!==delId);
+  localStorage.setItem('nr',JSON.stringify(records));
+  closePw();renderRecords();
+  toast('🗑 削除しました');
+}
+
+// Lightbox
+function openLightbox(s){document.getElementById('lightboxImg').src=s;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// Toast
+function toast(msg,err=false) {
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(err?' err':'');t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
 </script>
 </body>
 </html>
