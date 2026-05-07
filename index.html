@@ -517,15 +517,19 @@ function handlePhotos(e) {
   e.target.value='';
 }
 
-function compress(src,cb) {
+function compress(src,cb,maxPx=800,quality=0.7) {
   const img=new Image();
   img.onload=()=>{
-    const c=document.createElement('canvas');const m=800;
+    const c=document.createElement('canvas');
     let w=img.width,h=img.height;
-    if(w>h&&w>m){h=h*m/w;w=m;}else if(h>m){w=w*m/h;h=m;}
+    if(w>h&&w>maxPx){h=h*maxPx/w;w=maxPx;}else if(h>maxPx){w=w*maxPx/h;h=maxPx;}
     c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
-    cb(c.toDataURL('image/jpeg',0.7));
+    cb(c.toDataURL('image/jpeg',quality));
   };img.src=src;
+}
+
+function compressForCloud(src,cb) {
+  compress(src, cb, 300, 0.6);
 }
 
 function renderPreview() {
