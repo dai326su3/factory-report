@@ -358,6 +358,60 @@ code {
 }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast.err { background:#e63946; }
+
+  /* CSV & Delete */
+  .records-actions { display:flex; gap:8px; margin-bottom:12px; }
+  .csv-btn {
+    flex:1; background:#1a3a6b; border:none; border-radius:12px;
+    color:#fff; font-family:'Noto Sans JP',sans-serif;
+    font-size:13px; font-weight:700; padding:12px 8px; cursor:pointer;
+  }
+  .del-hint {
+    font-size:11px; color:#b0b8c8; text-align:center;
+    margin-bottom:12px;
+  }
+
+  /* Password modal */
+  .pw-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:300; align-items:center; justify-content:center; padding:24px; }
+  .pw-modal-overlay.open { display:flex; }
+  .pw-modal {
+    background:#fff; border-radius:20px; padding:28px 20px;
+    width:100%; max-width:340px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  }
+  .pw-modal h3 { font-size:16px; font-weight:900; margin-bottom:6px; }
+  .pw-modal p { font-size:13px; color:#8a93a8; margin-bottom:16px; }
+  .pw-input {
+    width:100%; box-sizing:border-box;
+    background:#f8f9fb; border:2px solid #e0e4eb;
+    border-radius:12px; font-family:'Noto Sans JP',sans-serif;
+    font-size:20px; font-weight:700; padding:13px 14px;
+    outline:none; text-align:center; letter-spacing:0.3em;
+    margin-bottom:12px;
+  }
+  .pw-input:focus { border-color:#e63946; }
+  .pw-confirm-btn {
+    width:100%; background:#e63946; border:none; border-radius:12px;
+    color:#fff; font-family:'Noto Sans JP',sans-serif;
+    font-size:15px; font-weight:700; padding:14px; cursor:pointer; margin-bottom:8px;
+  }
+  .pw-cancel-btn {
+    width:100%; background:none; border:2px solid #e0e4eb; border-radius:12px;
+    color:#8a93a8; font-family:'Noto Sans JP',sans-serif;
+    font-size:14px; padding:12px; cursor:pointer;
+  }
+  .pw-error { font-size:12px; color:#e63946; font-weight:700; text-align:center; margin-bottom:8px; display:none; }
+
+  /* Delete button on record card */
+  .rec-delete-btn {
+    display:inline-flex; align-items:center; gap:4px;
+    background:#fff0f1; border:1px solid #ffcdd2;
+    border-radius:8px; color:#e63946;
+    font-family:'Noto Sans JP',sans-serif;
+    font-size:11px; font-weight:700;
+    padding:4px 10px; cursor:pointer; margin-top:8px;
+  }
+
 </style>
 </head>
 <body>
@@ -483,6 +537,10 @@ code {
     <h2>報告一覧</h2>
     <span class="rec-count" id="recordCount">0件</span>
   </div>
+  <div class="records-actions">
+    <button class="csv-btn" onclick="downloadCSV()">📥 CSVダウンロード</button>
+  </div>
+  <p class="del-hint">🗑 カードの削除ボタンはPW認証が必要です</p>
   <div id="recordsList"></div>
 </div>
 
@@ -584,7 +642,19 @@ code {
   </div>
 </div>
 
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+<div class="pw-modal-overlay" id="pwModal">
+  <div class="pw-modal">
+    <h3>🔐 削除の確認</h3>
+    <p>削除するにはパスワードを入力してください</p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="••••" maxlength="10"
+      oninput="document.getElementById('pwError').style.display='none'" />
+    <p class="pw-error" id="pwError">パスワードが違います</p>
+    <button class="pw-confirm-btn" onclick="confirmDelete()">削除する</button>
+    <button class="pw-cancel-btn" onclick="closePwModal()">キャンセル</button>
+  </div>
+</div>
+
+<div class="lightbox"  id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close">✕</button>
   <img id="lightboxImg" src="" />
 </div>
@@ -742,7 +812,10 @@ code {
         ${r.hazards&&r.hazards.length>0?`<div class="hazard-tags">${r.hazards.map(h=>`<span class="hazard-tag">${h}</span>`).join('')}</div>`:''}
         ${r.photos&&r.photos.length>0?`<div class="rec-photos">${r.photos.map(p=>`<img src="${p}" onclick="event.stopPropagation();openLightbox('${p}')"/>`).join('')}</div>`:''}
         ${r.cause||r.action?`<div class="cause-row">${r.cause?`<span class="cause-pill cp">📌 原因：${r.cause.slice(0,25)}${r.cause.length>25?'…':''}</span>`:''} ${r.action?`<span class="cause-pill ap">🛠 対策：${r.action.slice(0,25)}${r.action.length>25?'…':''}</span>`:''}</div>`:'<div class="rec-hint">📝 タップして原因・対策を入力</div>'}
-        <div class="rec-footer">👤 ${r.reporter}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span class="rec-footer">👤 ${r.reporter}</span>
+          <button class="rec-delete-btn" onclick="event.stopPropagation();openPwModal(${r.id})">🗑 削除</button>
+        </div>
       </div>`).join('');
   }
 
@@ -797,6 +870,62 @@ code {
   }
 
   function removeEmail(i){emailAddresses.splice(i,1);localStorage.setItem('email_addresses',JSON.stringify(emailAddresses));renderEmailList();}
+
+  // CSV Download
+  function downloadCSV() {
+    if (records.length === 0) { showToast('記録がありません', true); return; }
+    const headers = ['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','危害判定','原因','対策'];
+    const rows = records.map(r => [
+      r.id, r.datetime, r.location, r.type,
+      '"' + (r.detail||'').replace(/"/g,'""') + '"',
+      r.reporter, r.status,
+      '"' + (r.hazards||[]).join(', ') + '"',
+      '"' + (r.cause||'').replace(/"/g,'""') + '"',
+      '"' + (r.action||'').replace(/"/g,'""') + '"'
+    ].join(','));
+    const bom = '﻿';
+    const csv = bom + headers.join(',') + '
+' + rows.join('
+');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '社内不適合記録_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ CSVをダウンロードしました');
+  }
+
+  // Delete with password
+  let deletingId = null;
+
+  function openPwModal(id) {
+    deletingId = id;
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwError').style.display = 'none';
+    document.getElementById('pwModal').classList.add('open');
+    setTimeout(() => document.getElementById('pwInput').focus(), 300);
+  }
+
+  function closePwModal() {
+    document.getElementById('pwModal').classList.remove('open');
+    deletingId = null;
+  }
+
+  function confirmDelete() {
+    const pw = document.getElementById('pwInput').value;
+    if (pw !== '1125') {
+      document.getElementById('pwError').style.display = 'block';
+      document.getElementById('pwInput').value = '';
+      return;
+    }
+    records = records.filter(r => r.id !== deletingId);
+    localStorage.setItem('factory_records', JSON.stringify(records));
+    closePwModal();
+    renderRecords();
+    showToast('🗑 削除しました');
+  }
 
   function showToast(msg,isErr=false){
     const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(isErr?' err':'');t.classList.add('show');
