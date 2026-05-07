@@ -184,10 +184,9 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
 const firebaseConfig = {
   apiKey: "AIzaSyAEm-nT-42TE1T_4EV4AkcHDaIVSlFtcVw",
   authDomain: "factory-report-154b2.firebaseapp.com",
@@ -196,11 +195,8 @@ const firebaseConfig = {
   messagingSenderId: "137569424627",
   appId: "1:137569424627:web:9750c35a36c7eecd5a5386"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-window.__db = db;
-window.__fbFns = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query };
+firebase.initializeApp(firebaseConfig);
+window.__db = firebase.firestore();
 </script>
 </head>
 <body>
@@ -407,7 +403,7 @@ window.__fbFns = { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSna
 
 <script>
 // EmailJS
-emailjs.init('Pg8zQVS-AA9bjp1ki');
+try { emailjs.init('Pg8zQVS-AA9bjp1ki'); } catch(e) { console.warn('EmailJS not loaded'); }
 const EMAILJS_SERVICE = 'service_7l6h5bs';
 const EMAILJS_TEMPLATE = 'template_c2nqwqd';
 
@@ -443,6 +439,7 @@ function removeEmail(i) {
 
 async function sendEmail(data) {
   if(!emailAddresses.length) return;
+  if(typeof emailjs === 'undefined') { console.warn('EmailJS not available'); return; }
   const [factory, line] = (data.location||'').split(' / ');
   const params = {
     to_email: emailAddresses.join(','),
@@ -475,14 +472,11 @@ window.onload = () => {
   document.getElementById('datetime').value = now.toISOString().slice(0,16);
   renderEmailList();
   // Wait for Firebase module to load then fetch data
-  setTimeout(async () => {
-    if (window.__db) {
-      await fbLoad();
-    } else {
-      records = JSON.parse(localStorage.getItem('nr')||'[]');
-      renderRecords();
-    }
-  }, 800);
+  // Load local records immediately
+  records = JSON.parse(localStorage.getItem('nr')||'[]');
+  renderRecords();
+  // Then merge Firebase data in background
+  setTimeout(fbLoadAndMerge, 1000);
 };
 
 function showTab(name, btn) {
@@ -490,7 +484,7 @@ function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
-  if(name==='records') { if(window.__db) fbLoad(); else renderRecords(); }
+  if(name==='records') renderRecords();
   if(name==='settings') renderEmailList();
 }
 
@@ -555,7 +549,52 @@ function setEmailToggle(val){
 }
 function getHazards(){return['拡散性あり','健康被害リスクあり','継続生産不可','作業者の怪我・怪我リスクあり'].filter((_,i)=>document.getElementById('hcb'+i).checked);}
 
-async function submitReport() {
+// Firebase sync (background only)
+function fbSyncAdd(record) {
+  if (!window.__db) return;
+  const { id, datetime, location, type, detail, reporter, status, hazards, cause, action, photoCount } = record;
+  window.__db.collection('reports').add({ id, datetime, location, type, detail, reporter, status, hazards: hazards||[], cause: cause||'', action: action||'', photoCount: photoCount||0 })
+    .then(ref => {
+      const idx = records.findIndex(r => r.id === id);
+      if (idx >= 0) { records[idx].fbId = ref.id; localStorage.setItem('nr', JSON.stringify(records)); }
+    }).catch(e => console.warn('Firebase sync failed', e.message));
+}
+function fbSyncUpdate(record) {
+  if (!window.__db || !record.fbId) return;
+  window.__db.collection('reports').doc(record.fbId).update({ cause: record.cause, action: record.action, status: record.status })
+    .catch(e => console.warn('Firebase update failed', e.message));
+}
+function fbSyncDelete(fbId) {
+  if (!window.__db || !fbId) return;
+  window.__db.collection('reports').doc(fbId).delete()
+    .catch(e => console.warn('Firebase delete failed', e.message));
+}
+function fbLoadAndMerge() {
+  if (!window.__db) return;
+  window.__db.collection('reports').orderBy('id','desc').get().then(snap => {
+    const localRecords = JSON.parse(localStorage.getItem('nr')||'[]');
+    const localIds = new Set(localRecords.map(r => r.id));
+    let changed = false;
+    snap.docs.forEach(d => {
+      const data = d.data();
+      if (!localIds.has(data.id)) {
+        localRecords.push({ ...data, fbId: d.id, photos: [] });
+        changed = true;
+      } else {
+        const idx = localRecords.findIndex(r => r.id === data.id);
+        if (idx >= 0 && !localRecords[idx].fbId) { localRecords[idx].fbId = d.id; changed = true; }
+      }
+    });
+    if (changed) {
+      localRecords.sort((a,b) => b.id - a.id);
+      records = localRecords;
+      localStorage.setItem('nr', JSON.stringify(records));
+      renderRecords();
+    }
+  }).catch(e => console.warn('Firebase load failed', e.message));
+}
+
+function submitReport() {
   const dt=document.getElementById('datetime').value;
   const fac=document.getElementById('factory').value;
   const ln=document.getElementById('line').value;
@@ -564,13 +603,14 @@ async function submitReport() {
   if(!dt||!fac||!ln||!selType||!det||!rep||!selStatus){toast('すべての項目を入力してください',true);return;}
 
   const id=Date.now();
-  const newRecord = {id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:''};
-  if (window.__db) {
-    const fbId = await fbAdd(newRecord);
-    newRecord.fbId = fbId;
-  }
+  const newRecord = {id,datetime:dt,location:fac+' / '+ln,type:selType,detail:det,reporter:rep,status:selStatus,photos:selPhotos,hazards:getHazards(),cause:'',action:'',photoCount:selPhotos.length};
+  // 1. Save locally first (always works)
   records.unshift(newRecord);
-  localStorage.setItem('nr',JSON.stringify(records));
+  localStorage.setItem('nr', JSON.stringify(records));
+  // 2. Sync to Firebase in background (non-blocking)
+  fbSyncAdd(newRecord);
+
+  renderRecords();
 
   if(document.getElementById('sendEmail').checked) {
     if(!emailAddresses.length){
@@ -781,15 +821,13 @@ function selectModalStatus(s) {
   ['未対応','対応中','完了'].forEach(x=>document.getElementById('ms-'+x).className='modal-status-btn'+(x===s?' sel-'+x:''));
 }
 
-async function saveEdit() {
+function saveEdit() {
   const idx=records.findIndex(r=>r.id===editId);if(idx<0)return;
   records[idx].cause=document.getElementById('modalCause').value.trim();
   records[idx].action=document.getElementById('modalAction').value.trim();
   records[idx].status=modalSt;
   localStorage.setItem('nr',JSON.stringify(records));
-  if (window.__db && records[idx].fbId) {
-    await fbUpdate(records[idx].fbId, {cause:records[idx].cause, action:records[idx].action, status:modalSt});
-  }
+  fbSyncUpdate(records[idx]);
   closeEditModal();renderRecords();
   toast('✅ 保存しました');
 }
@@ -798,15 +836,13 @@ async function saveEdit() {
 function openPw(id){delId=id;document.getElementById('pwInput').value='';document.getElementById('pwErr').style.display='none';document.getElementById('pwModal').classList.add('open');}
 function closePw(){document.getElementById('pwModal').classList.remove('open');delId=null;}
 
-async function confirmDelete() {
+function confirmDelete() {
   if(document.getElementById('pwInput').value!=='1125'){
     document.getElementById('pwErr').style.display='block';
     document.getElementById('pwInput').value='';return;
   }
   const target = records.find(r=>r.id===delId);
-  if (window.__db && target && target.fbId) {
-    await fbDelete(target.fbId);
-  }
+  if (target) fbSyncDelete(target.fbId);
   records=records.filter(r=>r.id!==delId);
   localStorage.setItem('nr',JSON.stringify(records));
   closePw();renderRecords();
