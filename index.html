@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -8,55 +7,55 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
 
-- { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
 body {
-background:#f0f2f5;
-color:#1a1a2e;
-font-family:‘Noto Sans JP’, sans-serif;
-min-height:100vh;
-padding-bottom:48px;
+  background:#f0f2f5;
+  color:#1a1a2e;
+  font-family:'Noto Sans JP', sans-serif;
+  min-height:100vh;
+  padding-bottom:48px;
 }
 
 header {
-background:#1a3a6b;
-padding:14px 16px;
-display:flex;
-align-items:center;
-gap:10px;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  background:#1a3a6b;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
 }
 .header-badge {
-background:#e63946;
-color:#fff;
-font-size:20px;
-width:38px; height:38px;
-border-radius:10px;
-display:flex; align-items:center; justify-content:center;
-flex-shrink:0;
+  background:#e63946;
+  color:#fff;
+  font-size:20px;
+  width:38px; height:38px;
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
 }
 header h1 { font-size:15px; font-weight:900; color:#fff; line-height:1.2; }
 header p { font-size:10px; color:rgba(255,255,255,0.6); letter-spacing:0.08em; }
 
 .tabs {
-display:flex;
-background:#fff;
-border-bottom:2px solid #e0e4eb;
-position:sticky;
-top:66px;
-z-index:99;
+  display:flex;
+  background:#fff;
+  border-bottom:2px solid #e0e4eb;
+  position:sticky;
+  top:66px;
+  z-index:99;
 }
 .tab-btn {
-flex:1; padding:13px 4px;
-background:none; border:none;
-border-bottom:3px solid transparent;
-font-family:‘Noto Sans JP’,sans-serif;
-font-size:12px; font-weight:700;
-color:#8a93a8; cursor:pointer;
-transition:all 0.2s; margin-bottom:-2px;
+  flex:1; padding:13px 4px;
+  background:none; border:none;
+  border-bottom:3px solid transparent;
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:12px; font-weight:700;
+  color:#8a93a8; cursor:pointer;
+  transition:all 0.2s; margin-bottom:-2px;
 }
 .tab-btn.active { color:#1a3a6b; border-bottom-color:#1a3a6b; }
 
@@ -64,64 +63,64 @@ transition:all 0.2s; margin-bottom:-2px;
 .section.active { display:block; }
 
 .card {
-background:#fff;
-border-radius:16px;
-padding:16px;
-margin-bottom:12px;
-box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.08);
 }
 .card-title {
-font-size:11px; font-weight:700;
-color:#8a93a8; letter-spacing:0.1em;
-text-transform:uppercase; margin-bottom:12px;
-display:flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:700;
+  color:#8a93a8; letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:12px;
+  display:flex; align-items:center; gap:6px;
 }
 .req { width:6px; height:6px; background:#e63946; border-radius:50%; display:inline-block; }
 
-input[type=“datetime-local”],
-input[type=“text”],
-input[type=“email”],
+input[type="datetime-local"],
+input[type="text"],
+input[type="email"],
 textarea,
 select {
-width:100%;
-max-width:100%;
-box-sizing:border-box;
-background:#f8f9fb;
-border:2px solid #e0e4eb;
-border-radius:12px;
-color:#1a1a2e;
-font-family:‘Noto Sans JP’,sans-serif;
-font-size:16px;
-padding:13px 14px;
-outline:none;
-transition:border-color 0.2s;
--webkit-appearance:none;
-appearance:none;
-min-height:50px;
-line-height:1.4;
-display:block;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  background:#f8f9fb;
+  border:2px solid #e0e4eb;
+  border-radius:12px;
+  color:#1a1a2e;
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:16px;
+  padding:13px 14px;
+  outline:none;
+  transition:border-color 0.2s;
+  -webkit-appearance:none;
+  appearance:none;
+  min-height:50px;
+  line-height:1.4;
+  display:block;
 }
 
 select {
-background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘16’ height=‘16’ viewBox=‘0 0 24 24’ fill=‘none’ stroke=’%238a93a8’ stroke-width=‘2’%3E%3Cpolyline points=‘6 9 12 15 18 9’%3E%3C/polyline%3E%3C/svg%3E”);
-background-repeat:no-repeat;
-background-position:right 12px center;
-padding-right:36px;
-box-sizing:border-box;
-max-width:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a93a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  padding-right:36px;
+  box-sizing:border-box;
+  max-width:100%;
 }
 input:focus, textarea:focus, select:focus { border-color:#1a3a6b; background:#fff; }
 textarea { min-height:90px; resize:none; line-height:1.7; width:100%; box-sizing:border-box; }
 
 .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 .type-btn {
-background:#f8f9fb; border:2px solid #e0e4eb;
-border-radius:14px; color:#5a6478;
-font-family:‘Noto Sans JP’,sans-serif;
-font-size:14px; font-weight:700;
-padding:16px 10px; cursor:pointer;
-transition:all 0.15s;
-display:flex; flex-direction:column; align-items:center; gap:6px;
+  background:#f8f9fb; border:2px solid #e0e4eb;
+  border-radius:14px; color:#5a6478;
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:14px; font-weight:700;
+  padding:16px 10px; cursor:pointer;
+  transition:all 0.15s;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
 }
 .type-btn .icon { font-size:24px; }
 .type-btn.sel-異物混入 { border-color:#e63946; background:#fff0f1; color:#e63946; }
@@ -131,49 +130,49 @@ display:flex; flex-direction:column; align-items:center; gap:6px;
 
 .status-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
 .status-btn {
-background:#f8f9fb; border:2px solid #e0e4eb;
-border-radius:12px; color:#5a6478;
-font-family:‘Noto Sans JP’,sans-serif;
-font-size:13px; font-weight:700;
-padding:13px 6px; cursor:pointer;
-transition:all 0.15s; text-align:center;
+  background:#f8f9fb; border:2px solid #e0e4eb;
+  border-radius:12px; color:#5a6478;
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:13px; font-weight:700;
+  padding:13px 6px; cursor:pointer;
+  transition:all 0.15s; text-align:center;
 }
 .status-btn.sel-未対応 { border-color:#e63946; background:#fff0f1; color:#e63946; }
 .status-btn.sel-対応中 { border-color:#d4aa00; background:#fffbea; color:#b8960a; }
 .status-btn.sel-完了 { border-color:#2a9d8f; background:#f0fbf9; color:#2a9d8f; }
 
 .hazard-item {
-display:flex; align-items:center; gap:14px;
-background:#f8f9fb; border:2px solid #e0e4eb;
-border-radius:12px; padding:15px 16px;
-margin-bottom:8px; cursor:pointer;
-transition:all 0.15s;
+  display:flex; align-items:center; gap:14px;
+  background:#f8f9fb; border:2px solid #e0e4eb;
+  border-radius:12px; padding:15px 16px;
+  margin-bottom:8px; cursor:pointer;
+  transition:all 0.15s;
 }
 .hazard-item.checked { border-color:#e63946; background:#fff0f1; }
-.hazard-item input[type=“checkbox”] {
-width:22px; height:22px; accent-color:#e63946;
-flex-shrink:0; cursor:pointer;
-border:none; padding:0; background:none;
+.hazard-item input[type="checkbox"] {
+  width:22px; height:22px; accent-color:#e63946;
+  flex-shrink:0; cursor:pointer;
+  border:none; padding:0; background:none;
 }
 .hazard-item .hlabel { font-size:15px; font-weight:500; color:#1a1a2e; }
 .hazard-item.checked .hlabel { color:#e63946; font-weight:700; }
 .hazard-alert {
-display:none; background:#fff0f1; border:1px solid #e63946;
-border-radius:10px; padding:10px 14px;
-font-size:13px; color:#e63946; font-weight:700;
-margin-top:8px; text-align:center;
+  display:none; background:#fff0f1; border:1px solid #e63946;
+  border-radius:10px; padding:10px 14px;
+  font-size:13px; color:#e63946; font-weight:700;
+  margin-top:8px; text-align:center;
 }
 .hazard-alert.visible { display:block; }
 
 .photo-upload-btn {
-width:100%; background:#f8f9fb;
-border:2px dashed #c0c8d8; border-radius:12px;
-padding:20px; text-align:center; cursor:pointer; position:relative;
+  width:100%; background:#f8f9fb;
+  border:2px dashed #c0c8d8; border-radius:12px;
+  padding:20px; text-align:center; cursor:pointer; position:relative;
 }
-.photo-upload-btn input[type=“file”] {
-position:absolute; inset:0; opacity:0;
-width:100%; height:100%; cursor:pointer;
-border:none; background:none; padding:0; font-size:0;
+.photo-upload-btn input[type="file"] {
+  position:absolute; inset:0; opacity:0;
+  width:100%; height:100%; cursor:pointer;
+  border:none; background:none; padding:0; font-size:0;
 }
 .up-icon { font-size:30px; margin-bottom:6px; }
 .up-text { font-size:14px; font-weight:700; color:#1a3a6b; }
@@ -183,11 +182,11 @@ border:none; background:none; padding:0; font-size:0;
 .photo-thumb { position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden; }
 .photo-thumb img { width:100%; height:100%; object-fit:cover; }
 .photo-thumb .remove-btn {
-position:absolute; top:4px; right:4px;
-width:24px; height:24px;
-background:rgba(0,0,0,0.6); border:none; border-radius:50%;
-color:#fff; font-size:12px; cursor:pointer;
-display:flex; align-items:center; justify-content:center;
+  position:absolute; top:4px; right:4px;
+  width:24px; height:24px;
+  background:rgba(0,0,0,0.6); border:none; border-radius:50%;
+  color:#fff; font-size:12px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
 }
 
 .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:4px 0; }
@@ -195,14 +194,14 @@ display:flex; align-items:center; justify-content:center;
 .toggle-switch { position:relative; width:50px; height:28px; flex-shrink:0; }
 .toggle-switch input { opacity:0; width:0; height:0; }
 .toggle-slider {
-position:absolute; inset:0;
-background:#d0d5e0; border-radius:100px; cursor:pointer; transition:background 0.2s;
+  position:absolute; inset:0;
+  background:#d0d5e0; border-radius:100px; cursor:pointer; transition:background 0.2s;
 }
 .toggle-slider::before {
-content:’’; position:absolute;
-width:22px; height:22px; left:3px; top:3px;
-background:#fff; border-radius:50%; transition:transform 0.2s;
-box-shadow:0 1px 3px rgba(0,0,0,0.2);
+  content:''; position:absolute;
+  width:22px; height:22px; left:3px; top:3px;
+  background:#fff; border-radius:50%; transition:transform 0.2s;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
 }
 .toggle-switch input:checked + .toggle-slider { background:#2a9d8f; }
 .toggle-switch input:checked + .toggle-slider::before { transform:translateX(22px); }
@@ -210,18 +209,18 @@ box-shadow:0 1px 3px rgba(0,0,0,0.2);
 .gas-row { display:flex; gap:8px; }
 .gas-row input { flex:1; font-size:13px; }
 .save-btn {
-background:#1a3a6b; border:none; border-radius:12px;
-color:#fff; font-family:‘Noto Sans JP’,sans-serif;
-font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap;
+  background:#1a3a6b; border:none; border-radius:12px;
+  color:#fff; font-family:'Noto Sans JP',sans-serif;
+  font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap;
 }
 
 .submit-btn {
-width:100%; background:#e63946; border:none; border-radius:16px;
-color:#fff; font-family:‘Noto Sans JP’,sans-serif;
-font-size:17px; font-weight:900; padding:18px; cursor:pointer;
-letter-spacing:0.04em;
-box-shadow:0 4px 14px rgba(230,57,70,0.35);
-transition:opacity 0.2s, transform 0.1s;
+  width:100%; background:#e63946; border:none; border-radius:16px;
+  color:#fff; font-family:'Noto Sans JP',sans-serif;
+  font-size:17px; font-weight:900; padding:18px; cursor:pointer;
+  letter-spacing:0.04em;
+  box-shadow:0 4px 14px rgba(230,57,70,0.35);
+  transition:opacity 0.2s, transform 0.1s;
 }
 .submit-btn:active { transform:scale(0.98); opacity:0.9; }
 .submit-btn:disabled { opacity:0.4; }
@@ -231,20 +230,20 @@ transition:opacity 0.2s, transform 0.1s;
 .rec-count { background:#1a3a6b; color:#fff; font-size:11px; font-weight:700; padding:3px 12px; border-radius:100px; }
 
 .record-card {
-background:#fff; border-radius:16px; padding:14px 16px;
-margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.08);
-border-left:4px solid #e63946; cursor:pointer; transition:box-shadow 0.15s;
+  background:#fff; border-radius:16px; padding:14px 16px;
+  margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  border-left:4px solid #e63946; cursor:pointer; transition:box-shadow 0.15s;
 }
 .record-card:active { box-shadow:0 2px 10px rgba(0,0,0,0.15); }
-.record-card[data-type=“設備トラブル”] { border-left-color:#f4a261; }
-.record-card[data-type=“品質不良”] { border-left-color:#d4aa00; }
-.record-card[data-type=“その他”] { border-left-color:#2a9d8f; }
+.record-card[data-type="設備トラブル"] { border-left-color:#f4a261; }
+.record-card[data-type="品質不良"] { border-left-color:#d4aa00; }
+.record-card[data-type="その他"] { border-left-color:#2a9d8f; }
 
 .record-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:6px; flex-wrap:wrap; }
 .rec-type-badge { font-size:12px; font-weight:700; padding:4px 10px; border-radius:100px; background:#fff0f1; color:#e63946; }
-[data-type=“設備トラブル”] .rec-type-badge { background:#fff8f0; color:#f4a261; }
-[data-type=“品質不良”] .rec-type-badge { background:#fffbea; color:#b8960a; }
-[data-type=“その他”] .rec-type-badge { background:#f0fbf9; color:#2a9d8f; }
+[data-type="設備トラブル"] .rec-type-badge { background:#fff8f0; color:#f4a261; }
+[data-type="品質不良"] .rec-type-badge { background:#fffbea; color:#b8960a; }
+[data-type="その他"] .rec-type-badge { background:#f0fbf9; color:#2a9d8f; }
 
 .badge-row { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
 .status-badge { font-size:11px; font-weight:700; padding:4px 10px; border-radius:100px; }
@@ -279,10 +278,10 @@ border-left:4px solid #e63946; cursor:pointer; transition:box-shadow 0.15s;
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:flex-end; }
 .modal-overlay.open { display:flex; }
 .modal-sheet {
-background:#fff; border-radius:24px 24px 0 0;
-padding:20px 16px 40px; width:100%;
-max-height:88vh; overflow-y:auto;
-animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  background:#fff; border-radius:24px 24px 0 0;
+  padding:20px 16px 40px; width:100%;
+  max-height:88vh; overflow-y:auto;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .modal-handle { width:40px; height:4px; background:#e0e4eb; border-radius:100px; margin:0 auto 18px; }
@@ -292,49 +291,49 @@ animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
 .modal-label { font-size:11px; font-weight:700; color:#8a93a8; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; display:block; }
 
 .modal-status-btn {
-background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px;
-color:#5a6478; font-family:‘Noto Sans JP’,sans-serif;
-font-size:13px; font-weight:700;
-padding:13px 6px; cursor:pointer; transition:all 0.15s; text-align:center;
+  background:#f8f9fb; border:2px solid #e0e4eb; border-radius:12px;
+  color:#5a6478; font-family:'Noto Sans JP',sans-serif;
+  font-size:13px; font-weight:700;
+  padding:13px 6px; cursor:pointer; transition:all 0.15s; text-align:center;
 }
 .modal-status-btn.sel-未対応 { border-color:#e63946; background:#fff0f1; color:#e63946; }
 .modal-status-btn.sel-対応中 { border-color:#d4aa00; background:#fffbea; color:#b8960a; }
 .modal-status-btn.sel-完了 { border-color:#2a9d8f; background:#f0fbf9; color:#2a9d8f; }
 
 .modal-save-btn {
-width:100%; background:#1a3a6b; border:none; border-radius:14px;
-color:#fff; font-family:‘Noto Sans JP’,sans-serif;
-font-size:16px; font-weight:700; padding:16px; cursor:pointer; margin-top:14px;
+  width:100%; background:#1a3a6b; border:none; border-radius:14px;
+  color:#fff; font-family:'Noto Sans JP',sans-serif;
+  font-size:16px; font-weight:700; padding:16px; cursor:pointer; margin-top:14px;
 }
 .modal-cancel-btn {
-width:100%; background:none; border:2px solid #e0e4eb; border-radius:14px;
-color:#8a93a8; font-family:‘Noto Sans JP’,sans-serif;
-font-size:14px; padding:13px; cursor:pointer; margin-top:8px;
+  width:100%; background:none; border:2px solid #e0e4eb; border-radius:14px;
+  color:#8a93a8; font-family:'Noto Sans JP',sans-serif;
+  font-size:14px; padding:13px; cursor:pointer; margin-top:8px;
 }
 
 .settings-title { font-size:13px; font-weight:700; color:#8a93a8; letter-spacing:0.1em; text-transform:uppercase; margin:0 0 12px; }
 .step-list { list-style:none; counter-reset:steps; }
 .step-list li {
-counter-increment:steps; font-size:13px; color:#5a6478;
-padding:10px 0 10px 32px; position:relative;
-border-bottom:1px solid #f0f2f5; line-height:1.6;
+  counter-increment:steps; font-size:13px; color:#5a6478;
+  padding:10px 0 10px 32px; position:relative;
+  border-bottom:1px solid #f0f2f5; line-height:1.6;
 }
 .step-list li:last-child { border-bottom:none; }
 .step-list li::before {
-content:counter(steps); position:absolute; left:0; top:10px;
-width:20px; height:20px; background:#1a3a6b; border-radius:50%;
-font-size:10px; font-weight:700; color:#fff;
-display:flex; align-items:center; justify-content:center;
+  content:counter(steps); position:absolute; left:0; top:10px;
+  width:20px; height:20px; background:#1a3a6b; border-radius:50%;
+  font-size:10px; font-weight:700; color:#fff;
+  display:flex; align-items:center; justify-content:center;
 }
 code {
-display:block; background:#f8f9fb; padding:12px; border-radius:10px;
-font-size:11px; color:#1a3a6b; word-break:break-all;
-white-space:pre-wrap; line-height:1.6; border:1px solid #e0e4eb;
+  display:block; background:#f8f9fb; padding:12px; border-radius:10px;
+  font-size:11px; color:#1a3a6b; word-break:break-all;
+  white-space:pre-wrap; line-height:1.6; border:1px solid #e0e4eb;
 }
 .copy-btn {
-width:100%; background:#2a9d8f; border:none; border-radius:12px;
-color:#fff; font-family:‘Noto Sans JP’,sans-serif;
-font-size:14px; font-weight:700; padding:14px; cursor:pointer; margin-top:12px;
+  width:100%; background:#2a9d8f; border:none; border-radius:12px;
+  color:#fff; font-family:'Noto Sans JP',sans-serif;
+  font-size:14px; font-weight:700; padding:14px; cursor:pointer; margin-top:12px;
 }
 
 .email-item { display:flex; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid #f0f2f5; }
@@ -343,7 +342,7 @@ font-size:14px; font-weight:700; padding:14px; cursor:pointer; margin-top:12px;
 .email-remove { background:#fff0f1; border:none; border-radius:8px; color:#e63946; font-size:12px; font-weight:700; padding:5px 10px; cursor:pointer; flex-shrink:0; }
 .email-add-row { display:flex; gap:8px; margin-top:12px; }
 .email-add-row input { flex:1; font-size:14px; }
-.email-add-btn { background:#1a3a6b; border:none; border-radius:12px; color:#fff; font-family:‘Noto Sans JP’,sans-serif; font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap; }
+.email-add-btn { background:#1a3a6b; border:none; border-radius:12px; color:#fff; font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; padding:0 16px; cursor:pointer; white-space:nowrap; }
 
 .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:999; align-items:center; justify-content:center; padding:20px; }
 .lightbox.open { display:flex; }
@@ -351,16 +350,15 @@ font-size:14px; font-weight:700; padding:14px; cursor:pointer; margin-top:12px;
 .lightbox-close { position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.15); border:none; color:#fff; font-size:20px; width:40px; height:40px; border-radius:50%; cursor:pointer; }
 
 .toast {
-position:fixed; bottom:28px; left:50%;
-transform:translateX(-50%) translateY(80px);
-background:#1a3a6b; color:#fff; font-weight:700; font-size:14px;
-padding:13px 24px; border-radius:100px; z-index:999;
-transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap;
+  position:fixed; bottom:28px; left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:#1a3a6b; color:#fff; font-weight:700; font-size:14px;
+  padding:13px 24px; border-radius:100px; z-index:999;
+  transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap;
 }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast.err { background:#e63946; }
 </style>
-
 </head>
 <body>
 
@@ -477,8 +475,7 @@ transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap;
     </div>
   </div>
 
-<button class="submit-btn" onclick="submitReport()">📤 報告を送信する</button>
-
+  <button class="submit-btn" onclick="submitReport()">📤 報告を送信する</button>
 </div>
 
 <div id="tab-records" class="section">
@@ -518,55 +515,51 @@ transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); white-space:nowrap;
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
 
-```
-if (data.action === 'update_cause_action') {
-  var lastRow = sheet.getLastRow();
-  for (var i = 2; i &lt;= lastRow; i++) {
-    if (sheet.getRange(i, 1).getValue() === data.recordId) {
-      sheet.getRange(i, 7).setValue(data.status);
-      sheet.getRange(i, 9).setValue(data.cause);
-      sheet.getRange(i, 10).setValue(data.action);
-      break;
+    if (data.action === 'update_cause_action') {
+      var lastRow = sheet.getLastRow();
+      for (var i = 2; i &lt;= lastRow; i++) {
+        if (sheet.getRange(i, 1).getValue() === data.recordId) {
+          sheet.getRange(i, 7).setValue(data.status);
+          sheet.getRange(i, 9).setValue(data.cause);
+          sheet.getRange(i, 10).setValue(data.action);
+          break;
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify({result:'success'}))
+        .setMimeType(ContentService.MimeType.JSON);
     }
+
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','送信日時','原因','対策']);
+    }
+    var hazardText = data.hazards && data.hazards.length > 0 ? data.hazards.join(', ') : 'なし';
+    sheet.appendRow([
+      data.recordId, data.datetime, data.location, data.type,
+      data.detail, data.reporter, data.status,
+      new Date().toLocaleString('ja-JP'), '', ''
+    ]);
+
+    if (data.sendEmail && data.emails && data.emails.length > 0) {
+      var subject = '【社内不適合報告】' + data.type + ' - ' + data.location;
+      var body = '社内不適合が報告されました。\n\n'
+        + '【危害判定】' + hazardText + '\n\n'
+        + '発生日時：' + data.datetime + '\n'
+        + '発生場所：' + data.location + '\n'
+        + '種類：' + data.type + '\n'
+        + '詳細：' + data.detail + '\n'
+        + '発見者：' + data.reporter + '\n'
+        + '対処状況：' + data.status + '\n';
+      MailApp.sendEmail(data.emails.join(','), subject, body);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({result:'success'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({result:'error',message:err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
   }
-  return ContentService.createTextOutput(JSON.stringify({result:'success'}))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-if (sheet.getLastRow() === 0) {
-  sheet.appendRow(['ID','発生日時','発生場所','不適合種類','詳細','発見者名','対処状況','送信日時','原因','対策']);
-}
-var hazardText = data.hazards && data.hazards.length > 0 ? data.hazards.join(', ') : 'なし';
-sheet.appendRow([
-  data.recordId, data.datetime, data.location, data.type,
-  data.detail, data.reporter, data.status,
-  new Date().toLocaleString('ja-JP'), '', ''
-]);
-
-if (data.sendEmail && data.emails && data.emails.length > 0) {
-  var subject = '【社内不適合報告】' + data.type + ' - ' + data.location;
-  var body = '社内不適合が報告されました。\n\n'
-    + '【危害判定】' + hazardText + '\n\n'
-    + '発生日時：' + data.datetime + '\n'
-    + '発生場所：' + data.location + '\n'
-    + '種類：' + data.type + '\n'
-    + '詳細：' + data.detail + '\n'
-    + '発見者：' + data.reporter + '\n'
-    + '対処状況：' + data.status + '\n';
-  MailApp.sendEmail(data.emails.join(','), subject, body);
-}
-
-return ContentService.createTextOutput(JSON.stringify({result:'success'}))
-  .setMimeType(ContentService.MimeType.JSON);
-```
-
-} catch(err) {
-return ContentService.createTextOutput(JSON.stringify({result:‘error’,message:err.toString()}))
-.setMimeType(ContentService.MimeType.JSON);
-}
 }</code>
-<button class="copy-btn" onclick="copyCode()">📋 コードをコピー</button>
-
+    <button class="copy-btn" onclick="copyCode()">📋 コードをコピー</button>
   </div>
 </div>
 
@@ -782,7 +775,7 @@ return ContentService.createTextOutput(JSON.stringify({result:‘error’,messag
     const gasUrl=localStorage.getItem('gas_url');
     if(gasUrl){
       try{
-        await fetch(gasUrl,{method:'POST',body:JSON.stringify({action:'update_cause_action',recordId:String(editingId),cause,action,status:modalStatus}),headers:{'Content-Type':'text/plain'}});
+        await fetch(gasUrl,{method:'POST', mode:'no-cors', body:JSON.stringify({action:'update_cause_action',recordId:String(editingId),cause,action,status:modalStatus}),headers:{'Content-Type':'text/plain'}});
         showToast('✅ スプレッドシートに保存しました');
       }catch(e){showToast('✅ 保存済み（シート送信失敗）',true);}
     }else{showToast('✅ 原因・対策を保存しました');}
@@ -815,6 +808,5 @@ return ContentService.createTextOutput(JSON.stringify({result:‘error’,messag
     navigator.clipboard.writeText(raw).then(()=>showToast('コードをコピーしました ✓'));
   }
 </script>
-
 </body>
 </html>
