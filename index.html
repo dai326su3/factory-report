@@ -521,13 +521,16 @@ function addEmail() {
   if(emailAddresses.includes(email)){toast('すでに登録済みです',true);return;}
   emailAddresses.push(email);
   localStorage.setItem('emails',JSON.stringify(emailAddresses));
-  input.value=''; renderEmailList(); toast('追加しました ✓');
+  fbSaveEmails();
+  input.value=''; renderEmailList(); toast('追加しました ✓（全端末に同期中）');
 }
 
 function removeEmail(i) {
   emailAddresses.splice(i,1);
   localStorage.setItem('emails',JSON.stringify(emailAddresses));
+  fbSaveEmails();
   renderEmailList();
+  toast('削除しました');
 }
 
 async function sendEmail(data) {
