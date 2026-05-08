@@ -228,14 +228,16 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
   /* NEW badge */
   .new-badge {
     background:#e63946; color:#fff;
-    font-size:10px; font-weight:900;
-    padding:2px 8px; border-radius:100px;
-    letter-spacing:0.08em; animation:newPulse 1.5s infinite;
+    font-size:12px; font-weight:900;
+    padding:4px 12px; border-radius:100px;
+    letter-spacing:0.1em;
+    animation:newPulse 1s infinite;
     flex-shrink:0;
+    box-shadow:0 2px 8px rgba(230,57,70,0.5);
   }
   @keyframes newPulse {
-    0%,100% { opacity:1; }
-    50% { opacity:0.6; }
+    0%,100% { transform:scale(1); box-shadow:0 2px 8px rgba(230,57,70,0.5); }
+    50% { transform:scale(1.08); box-shadow:0 4px 14px rgba(230,57,70,0.7); }
   }
 
 </style>
@@ -880,6 +882,16 @@ function getSorted() {
 function renderRecords() {
   const list=document.getElementById('recordsList');
   document.getElementById('recordCount').textContent=records.length+'件';
+  // タブに未読バッジを表示
+  const unreadCount = records.filter(r => r.id > lastReadId).length;
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(btn => {
+    if (btn.textContent.includes('記録')) {
+      btn.innerHTML = unreadCount > 0
+        ? '📋 記録一覧 <span style="background:#e63946;color:#fff;font-size:10px;font-weight:900;padding:1px 7px;border-radius:100px;margin-left:2px">'+unreadCount+'</span>'
+        : '📋 記録一覧';
+    }
+  });
   if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
   const sorted=getSorted();
   list.innerHTML=sorted.map(r=>`
