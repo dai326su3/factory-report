@@ -878,10 +878,15 @@ function renderRecords() {
   document.getElementById('recordCount').textContent=records.length+'件';
   if(!records.length){list.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><p>まだ記録がありません</p></div>';return;}
   const sorted=getSorted();
+  // デバッグ：最初の記録のIDとlastReadIdを表示
+  if(sorted.length>0) toast('DEBUG: lastReadId='+lastReadId+' / record[0].id='+sorted[0].id);
   list.innerHTML=sorted.map(r=>`
     <div class="record-card" data-type="${r.type}" onclick="openEdit(${r.id})" style="${r.id > lastReadId ? 'box-shadow:0 2px 12px rgba(230,57,70,0.18);' : ''}">
       <div class="record-top">
-        <span class="rec-type-badge">${r.type}</span>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          ${r.id > lastReadId ? '<span class="new-badge">NEW</span>' : ''}
+          <span class="rec-type-badge">${r.type}</span>
+        </div>
         <div class="badge-row">
           <span class="status-badge sb-${r.status}">${r.status}</span>
           ${(r.cause&&r.action)?'<span class="ca-badge ca-done">✅ 対策済</span>':(r.cause||r.action)?'<span class="ca-badge ca-partial">📝 入力中</span>':'<span class="ca-badge ca-none">⬜ 未入力</span>'}
