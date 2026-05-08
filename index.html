@@ -110,7 +110,7 @@ textarea { min-height:90px; resize:none; line-height:1.7; }
 .ca-partial { background:#fffbea; color:#b8960a; }
 .ca-none { background:#f0f2f5; color:#8a93a8; }
 
-.rec-datetime { font-size:11px; color:#8a93a8; margin-bottom:4px; }
+.rec-datetime { font-size:14px; font-weight:700; color:#5a6478; margin-bottom:6px; }
 .rec-location { font-size:14px; font-weight:700; margin-bottom:4px; }
 .rec-detail { font-size:13px; color:#5a6478; line-height:1.5; margin-bottom:6px; }
 .rec-hint { font-size:11px; color:#b0b8c8; margin-top:6px; }
@@ -516,7 +516,20 @@ window.__db = firebase.firestore();
 </div>
 
 <!-- ライトボックス -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+<div class="pw-overlay" id="emailPwModal" onclick="if(event.target===this)closeEmailPw()">
+  <div class="pw-box">
+    <h3>🔐 認証が必要です</h3>
+    <p id="emailPwDesc">操作するにはパスワードを入力してください</p>
+    <input type="password" class="pw-input" id="emailPwInput" placeholder="••••••••" maxlength="20"
+      oninput="document.getElementById('emailPwErr').style.display='none'"
+      onkeydown="if(event.key==='Enter')confirmEmailPw()" />
+    <div class="pw-err" id="emailPwErr">パスワードが違います</div>
+    <button class="pw-ok-btn" onclick="confirmEmailPw()">確認</button>
+    <button class="pw-ng-btn" onclick="closeEmailPw()">キャンセル</button>
+  </div>
+</div>
+
+<div class="lightbox"  id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close">✕</button>
   <img id="lightboxImg" src="" />
 </div>
@@ -599,6 +612,9 @@ function addEmail() {
 }
 
 function removeEmail(i) {
+  openEmailPw('remove', i);
+}
+function doRemoveEmail(i) {
   emailAddresses.splice(i,1);
   localStorage.setItem('emails',JSON.stringify(emailAddresses));
   fbSaveEmails();
@@ -784,38 +800,42 @@ function fbLoadAndMerge() {
   window.__db.collection('reports').orderBy('id','desc').get().then(snap => {
     const localRecords = JSON.parse(localStorage.getItem('nr')||'[]');
     const localIds = new Set(localRecords.map(r => r.id));
+    const fbIds = new Set(snap.docs.map(d => d.data().id));
     let changed = false;
+
+    // Firebaseに存在しないローカルレコードを削除（他の端末で削除されたもの）
+    const filtered = localRecords.filter(r => {
+      if (r.fbId && !fbIds.has(r.id)) { changed = true; return false; } // 削除済み
+      return true;
+    });
+
     snap.docs.forEach(d => {
       const data = d.data();
       const fbPhotos = data.photos && data.photos.length ? data.photos : [];
       if (!localIds.has(data.id)) {
-        // 新規レコード：写真も含めて追加
-        localRecords.push({ ...data, fbId: d.id, photos: fbPhotos });
+        filtered.push({ ...data, fbId: d.id, photos: fbPhotos });
         changed = true;
       } else {
-        // 既存レコード：fbId・写真・ステータス・原因・対策を更新
-        const idx = localRecords.findIndex(r => r.id === data.id);
+        const idx = filtered.findIndex(r => r.id === data.id);
         if (idx >= 0) {
-          if (!localRecords[idx].fbId) { localRecords[idx].fbId = d.id; changed = true; }
-          // ローカルに写真がなくFirebaseにあれば取得
-          if (fbPhotos.length > 0 && (!localRecords[idx].photos || localRecords[idx].photos.length === 0)) {
-            localRecords[idx].photos = fbPhotos;
-            changed = true;
+          if (!filtered[idx].fbId) { filtered[idx].fbId = d.id; changed = true; }
+          if (fbPhotos.length > 0 && (!filtered[idx].photos || filtered[idx].photos.length === 0)) {
+            filtered[idx].photos = fbPhotos; changed = true;
           }
-          // 原因・対策・ステータスも同期
-          if (data.cause && !localRecords[idx].cause) { localRecords[idx].cause = data.cause; changed = true; }
-          if (data.action && !localRecords[idx].action) { localRecords[idx].action = data.action; changed = true; }
+          if (data.cause && !filtered[idx].cause) { filtered[idx].cause = data.cause; changed = true; }
+          if (data.action && !filtered[idx].action) { filtered[idx].action = data.action; changed = true; }
+          // ステータスも同期（最新を優先）
+          if (data.status && data.status !== filtered[idx].status) { filtered[idx].status = data.status; changed = true; }
         }
       }
     });
-    localRecords.sort((a,b) => b.id - a.id);
-    records = localRecords;
+
+    filtered.sort((a,b) => b.id - a.id);
+    records = filtered;
     localStorage.setItem('nr', JSON.stringify(records));
     renderRecords();
     calcUnreadBadge();
-    const photoCount = localRecords.filter(r=>r.photos&&r.photos.length>0).length;
-    if (photoCount > 0) toast('🔄 同期完了（写真' + photoCount + '件）');
-  }).catch(e => { console.warn('Firebase load failed', e.message); toast('⚠️ 同期失敗', true); });
+  }).catch(e => console.warn('Firebase load failed', e.message));
 }
 
 function submitReport() {
@@ -1121,6 +1141,37 @@ function markAllRead() {
 // サービスワーカー登録（バッジ機能に必要）
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW error:', e));
+}
+
+// メールアドレス操作パスワード
+let emailPwAction = null;
+let emailPwTarget = null;
+
+function openEmailPw(action, target=null) {
+  emailPwAction = action;
+  emailPwTarget = target;
+  const desc = action === 'add' ? '追加するにはパスワードを入力してください' : '削除するにはパスワードを入力してください';
+  document.getElementById('emailPwDesc').textContent = desc;
+  document.getElementById('emailPwInput').value = '';
+  document.getElementById('emailPwErr').style.display = 'none';
+  document.getElementById('emailPwModal').classList.add('open');
+  setTimeout(() => document.getElementById('emailPwInput').focus(), 300);
+}
+
+function closeEmailPw() {
+  document.getElementById('emailPwModal').classList.remove('open');
+  emailPwAction = null; emailPwTarget = null;
+}
+
+function confirmEmailPw() {
+  if (document.getElementById('emailPwInput').value !== '1125') {
+    document.getElementById('emailPwErr').style.display = 'block';
+    document.getElementById('emailPwInput').value = '';
+    return;
+  }
+  closeEmailPw();
+  if (emailPwAction === 'add') doAddEmail();
+  else if (emailPwAction === 'remove') doRemoveEmail(emailPwTarget);
 }
 
 function toast(msg,err=false) {
