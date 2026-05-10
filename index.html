@@ -264,11 +264,28 @@ window.__db = firebase.firestore();
     <div class="login-icon">🏭</div>
     <div class="login-title">社内不適合 報告システム</div>
     <div class="login-sub">FACTORY QUALITY MANAGEMENT</div>
+
+    <!-- 新着通知 -->
+    <div id="loginNewBadge" style="display:none;background:#e63946;color:#fff;border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:13px;font-weight:700;text-align:center;animation:newPulse 1s infinite">
+      📋 新しい報告があります
+    </div>
+
     <input type="password" class="login-input" id="loginInput"
       placeholder="••••••••"
       onkeydown="if(event.key==='Enter')checkLogin()" />
     <button class="login-btn" onclick="checkLogin()">ログイン</button>
     <div class="login-err" id="loginErr">パスワードが違います</div>
+
+    <!-- バージョン情報 -->
+    <div style="margin-top:20px;border-top:1px solid #e0e4eb;padding-top:14px;text-align:left">
+      <div style="font-size:11px;font-weight:700;color:#8a93a8;letter-spacing:0.1em;margin-bottom:8px">RELEASE NOTES</div>
+      <div style="display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <span style="background:#1a3a6b;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;margin-top:1px">v1.0</span>
+          <span style="font-size:11px;color:#5a6478;line-height:1.5">初回リリース。不適合記録・写真・危害判定・メール通知・Firebase共有・CSV/HTMLレポート出力に対応</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -555,6 +572,15 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('loginOverlay').style.display = 'none';
   } else {
     setTimeout(() => document.getElementById('loginInput').focus(), 300);
+    // 新着バッジをログイン画面に表示
+    const storedRecords = JSON.parse(localStorage.getItem('nr')||'[]');
+    const lastRead = parseInt(localStorage.getItem('lastReadTime')||'0');
+    const unread = storedRecords.filter(r => r.id > lastRead).length;
+    if (unread > 0) {
+      const badge = document.getElementById('loginNewBadge');
+      badge.style.display = 'block';
+      badge.textContent = '📋 新しい報告が ' + unread + ' 件あります';
+    }
   }
 });
 
